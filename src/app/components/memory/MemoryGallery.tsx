@@ -8,7 +8,7 @@ import {
   IconButton,
   Chip,
 } from '@mui/material';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useRef, useEffect, useMemo } from 'react';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
@@ -53,31 +53,6 @@ interface MemoryGalleryProps {
   endImageUrl?: string;
   themeKey?: keyof typeof colorThemes;
 }
-
-/* ----------------------- Demo Data ----------------------- */
-
-const defaultMemories: MemoryImage[] = [
-  {
-    id: '1',
-    url: '/images/7.png',
-    caption: 'วันธรรมดาที่เริ่มไม่ธรรมดา',
-    title: 'โมเมนต์ที่ 1 · วันแรกที่เราได้คุยกัน',
-    text: 'เป็นแค่แชททักธรรมดา ๆ แต่สำหรับเรา มันคือวันแรกที่ชื่อของนายเข้ามาอยู่ในความทรงจำจริง ๆ 💚',
-    timestamp: 'วันแรกที่เริ่มทัก',
-    showAt: 30,
-    hiddenAt: 36,
-  },
-  {
-    id: '2',
-    url: '/images/8.png',
-    caption: 'ข้อความแรกที่ทำให้ยิ้มทั้งวัน',
-    title: 'โมเมนต์ที่ 2 · แชทสั้น ๆ ที่วนอยู่ในหัว',
-    text: 'หลังจากคุยกับนายจบ… เราเผลอเปิดแชทกลับไปอ่านซ้ำหลายรอบมาก 😊',
-    timestamp: 'เริ่มสนิทกัน',
-    showAt: 36,
-    hiddenAt: 42,
-  },
-];
 
 // ==================== LYRICS DATA ====================
 const lyricMoments = [
@@ -171,7 +146,7 @@ const AnimatedBackgroundElements = ({
 /* ----------------------- Main Component ----------------------- */
 
 export default function MemoryGallery({
-  memories = defaultMemories,
+  memories,
   color,
   accentColor,
   onClose,
@@ -199,15 +174,18 @@ export default function MemoryGallery({
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showEndScreen, setShowEndScreen] = useState(false);
 
+  // Fallback: ใช้ memory จาก props หรือ array ว่าง
+  const memoryList = memories && memories.length > 0 ? memories : [];
+
   useEffect(() => {
-    if (!duration || !memories.length) return;
-    const idx = memories.findIndex(
+    if (!duration || !memoryList.length) return;
+    const idx = memoryList.findIndex(
       (m) => currentTime >= (m.showAt ?? 0) && currentTime < (m.hiddenAt ?? Infinity)
     );
     if (idx !== -1 && idx !== currentIndex && isPlaying) {
       setCurrentIndex(idx);
     }
-  }, [currentTime, duration, memories, currentIndex, isPlaying]);
+  }, [currentTime, duration, memoryList, currentIndex, isPlaying]);
 
   useEffect(() => {
     setShowEndScreen(!!songEnded);
@@ -215,18 +193,17 @@ export default function MemoryGallery({
 
   const onPrev = () => {
     if (isPlaying) return;
-    setCurrentIndex((i) => (i - 1 + memories.length) % memories.length);
+    setCurrentIndex((i) => (i - 1 + memoryList.length) % memoryList.length);
   };
 
   const onNext = () => {
     if (isPlaying) return;
-    setCurrentIndex((i) => (i + 1) % memories.length);
+    setCurrentIndex((i) => (i + 1) % memoryList.length);
   };
 
   const progress = duration && currentTime >= 0 ? Math.max(0, Math.min(100, (currentTime / duration) * 100)) : 0;
-  const currentMemory = memories[currentIndex] ?? memories[0];
-  
-  // ✅ FIX: ส่ง startTime และ endTime ด้วย
+  const currentMemory = memoryList[currentIndex] ?? memoryList[0];
+
   const currentLyric = useMemo(
     () => lyricMoments.find((l) => currentTime >= l.startTime && currentTime < l.endTime),
     [currentTime],
@@ -249,6 +226,24 @@ export default function MemoryGallery({
     ? `${currentMemory.text.slice(0, 160)}…`
     : currentMemory?.text || '';
 
+  // Early return if no memories
+  if (!memoryList.length) {
+    return (
+      <Box
+        sx={{
+          minHeight: '100vh',
+          background: galleryBackground,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: 'rgba(255,255,255,0.8)',
+        }}
+      >
+        <Typography>ไม่มีข้อมูลโมเมนต์</Typography>
+      </Box>
+    );
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -261,8 +256,8 @@ export default function MemoryGallery({
     >
       <AnimatedBackgroundElements themeKey={themeKey} />
 
-      {/* ✅ Lyrics Notification - FIX: Pass startTime & endTime */}
-      <LyricsNotification 
+      {/* ✅ Lyrics Notification */}
+      <LyricsNotification
         lyric={currentLyric?.text ?? null}
         primaryColor={primaryColor}
         accentColor={primaryAccent}
@@ -362,7 +357,7 @@ export default function MemoryGallery({
                 >
                   <Chip
                     icon={<FavoriteRoundedIcon />}
-                    label={`${currentIndex + 1}/${memories.length}`}
+                    label={`${currentIndex + 1}/${memoryList.length}`}
                     sx={{
                       background: 'rgba(255, 255, 255, 0.08)',
                       backdropFilter: 'blur(10px)',
@@ -442,7 +437,7 @@ export default function MemoryGallery({
             {/* LEFT: 3D Circular Card Slider */}
             <Box sx={{ width: '100%' }}>
               <CardSlider
-                items={memories}
+                items={memoryList}
                 activeIndex={currentIndex}
                 onPrev={onPrev}
                 onNext={onNext}
@@ -530,20 +525,22 @@ export default function MemoryGallery({
                     pb: { xs: 0.5, md: 1 },
                   }}
                 >
-                  {memories.map((m, idx) => {
-                    if (idx !== currentIndex) return null;
-                    const displayUrl = heicFallback(m.url);
-                    return (
-                      <TimelineItem
-                        key={m.id}
-                        memory={m}
-                        isVideoMemory={isVideoMemory(m)}
-                        appleGlassStyle={appleGlassStyle}
-                        primaryAccent={primaryAccent}
-                        displayUrl={displayUrl}
-                      />
-                    );
-                  })}
+                  <AnimatePresence mode="wait">
+                    {memoryList.map((m, idx) => {
+                      if (idx !== currentIndex) return null;
+                      const displayUrl = heicFallback(m.url);
+                      return (
+                        <TimelineItem
+                          key={m.id}
+                          memory={m}
+                          isVideoMemory={isVideoMemory(m)}
+                          appleGlassStyle={appleGlassStyle}
+                          primaryAccent={primaryAccent}
+                          displayUrl={displayUrl}
+                        />
+                      );
+                    })}
+                  </AnimatePresence>
                 </Box>
 
                 {/* Footer */}
