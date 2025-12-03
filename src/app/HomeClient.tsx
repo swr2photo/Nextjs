@@ -10,14 +10,15 @@ import {
   MenuItem,
 } from '@mui/material';
 import { useState, useEffect, useRef } from 'react';
+import Palette from '@mui/icons-material/Palette';
+import type { StoryScene } from './components/MusicPlayer';
+
 // ✅ FIX: Import paths
 import HappyBirthday from './components/HappyBirthday';
 import MusicPlayer from './components/MusicPlayer';
 import Cake3D from './components/Cake3D';
-import GiftBox from './components/GiftBox3D';
+import { GiftBox3D } from './components/gift';
 import { useThemeContext, colorThemes, type colorThemes as ColorThemesType } from './providers';
-import Palette from '@mui/icons-material/Palette';
-import type { StoryScene } from './components/MusicPlayer';
 import { MemoryGallery } from './components/memory';
 import { memoryImages } from './utils/memories';
 
@@ -467,7 +468,7 @@ export default function HomeClient() {
             },
           }}
         >
-          <GiftBox
+          <GiftBox3D
             color={currentColors.primary}
             accentColor={currentColors.accent}
           />

@@ -3,12 +3,14 @@
 import { Box } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
 import type React from 'react';
+import MusicNoteRoundedIcon from '@mui/icons-material/MusicNoteRounded';
+import QueueMusicRoundedIcon from '@mui/icons-material/QueueMusicRounded';
 
 interface LyricsNotificationProps {
   lyric: string | null;
   primaryColor: string;
   accentColor: string;
-  startTime?: number; // ✅ เพิ่ม unique identifier
+  startTime?: number;
   endTime?: number;
 }
 
@@ -19,8 +21,7 @@ export const LyricsNotification: React.FC<LyricsNotificationProps> = ({
   startTime = 0,
   endTime = 0,
 }) => {
-  // ✅ Generate unique key
-  const uniqueKey = lyric 
+  const uniqueKey = lyric
     ? `lyric-${startTime}-${endTime}-${lyric.substring(0, 10)}`
     : null;
 
@@ -28,90 +29,86 @@ export const LyricsNotification: React.FC<LyricsNotificationProps> = ({
     <AnimatePresence mode="wait">
       {lyric && (
         <motion.div
-          key={uniqueKey} // ✅ แก้ไขจาก key={lyric}
-          initial={{ 
-            opacity: 0, 
-            x: 120, 
-            y: -60,
+          key={uniqueKey}
+          initial={{
+            opacity: 0,
+            x: 80,
+            y: -40,
             scale: 0.7,
-            rotateX: -30,
-            rotateZ: -5,
+            rotateX: -20,
+            rotateZ: -4,
           }}
-          animate={{ 
-            opacity: 1, 
-            x: 0, 
+          animate={{
+            opacity: 1,
+            x: 0,
             y: 0,
             scale: 1,
             rotateX: 0,
             rotateZ: 0,
           }}
-          exit={{ 
-            opacity: 0, 
-            x: -120, 
-            y: 60,
+          exit={{
+            opacity: 0,
+            x: -80,
+            y: 40,
             scale: 0.7,
-            rotateX: 30,
-            rotateZ: 5,
+            rotateX: 20,
+            rotateZ: 4,
           }}
-          transition={{ 
-            duration: 0.6, 
+          transition={{
+            duration: 0.45,
             type: 'spring',
-            stiffness: 120,
+            stiffness: 130,
             damping: 18,
-            mass: 0.8,
+            mass: 0.7,
           }}
           style={{
             position: 'fixed',
-            top: '80px',
-            right: '20px',
+            top: '64px',
+            right: '12px',
             zIndex: 1000,
-            perspective: '1200px',
+            perspective: '1000px',
             transformStyle: 'preserve-3d',
           }}
         >
           <Box
             sx={{
-              maxWidth: { xs: 300, md: 420 },
-              px: { xs: 4, md: 5 },
-              py: { xs: 3.5, md: 4 },
-              borderRadius: { xs: '16px', md: '20px' },
-              
+              maxWidth: { xs: 260, md: 340 },
+              px: { xs: 2.5, md: 3 },
+              py: { xs: 2, md: 2.5 },
+              borderRadius: { xs: '12px', md: '14px' },
+
               background: `
                 linear-gradient(135deg, 
-                  rgba(255, 255, 255, 0.15) 0%,
-                  rgba(255, 255, 255, 0.05) 100%
+                  rgba(255, 255, 255, 0.14) 0%,
+                  rgba(255, 255, 255, 0.04) 100%
                 )
               `,
-              backdropFilter: 'blur(30px) brightness(1.1)',
-              WebkitBackdropFilter: 'blur(30px) brightness(1.1)',
-              
-              border: `1px solid rgba(255, 255, 255, 0.3)`,
-              
+              backdropFilter: 'blur(20px) brightness(1.05)',
+              WebkitBackdropFilter: 'blur(20px) brightness(1.05)',
+
+              border: `1px solid rgba(255, 255, 255, 0.25)`,
+
               boxShadow: `
-                inset 0 1px 0 rgba(255, 255, 255, 0.4),
-                inset 0 -1px 20px rgba(0, 0, 0, 0.1),
-                0 8px 32px rgba(0, 0, 0, 0.1),
-                0 0 50px ${accentColor}44,
-                0 0 100px ${accentColor}22
+                inset 0 1px 0 rgba(255, 255, 255, 0.35),
+                0 6px 24px rgba(0, 0, 0, 0.4),
+                0 0 26px ${accentColor}33
               `,
-              
+
               color: '#fff',
-              fontSize: { xs: '0.95rem', md: '1.05rem' },
-              fontWeight: 700,
-              letterSpacing: '0.5px',
-              lineHeight: 1.7,
+              fontSize: { xs: '0.85rem', md: '0.95rem' },
+              fontWeight: 600,
+              letterSpacing: '0.4px',
+              lineHeight: 1.5,
               textAlign: 'center',
               position: 'relative',
               overflow: 'visible',
-              
-              transition: 'all 0.3s ease',
+
+              transition: 'all 0.25s ease',
               '&:hover': {
                 boxShadow: `
-                  inset 0 1px 0 rgba(255, 255, 255, 0.5),
-                  inset 0 -1px 20px rgba(0, 0, 0, 0.15),
-                  0 12px 48px rgba(0, 0, 0, 0.15),
-                  0 0 60px ${accentColor}55,
-                  0 0 120px ${accentColor}33
+                  inset 0 1px 0 rgba(255, 255, 255, 0.4),
+                  0 8px 28px rgba(0, 0, 0, 0.45),
+                  0 0 32px ${accentColor}44
                 `,
               },
             }}
@@ -139,7 +136,7 @@ export const LyricsNotification: React.FC<LyricsNotificationProps> = ({
                   )
                 `,
                 backgroundSize: '200% 200%',
-                opacity: 0.7,
+                opacity: 0.6,
                 pointerEvents: 'none',
               }}
             />
@@ -148,28 +145,28 @@ export const LyricsNotification: React.FC<LyricsNotificationProps> = ({
             <Box
               sx={{
                 position: 'absolute',
-                top: -20,
+                top: -14,
                 left: '50%',
                 transform: 'translateX(-50%)',
-                width: '80%',
-                height: '40px',
-                background: `radial-gradient(ellipse at center, ${accentColor}44, transparent 70%)`,
-                filter: 'blur(12px)',
+                width: '70%',
+                height: '28px',
+                background: `radial-gradient(ellipse at center, ${accentColor}33, transparent 70%)`,
+                filter: 'blur(10px)',
                 pointerEvents: 'none',
               }}
             />
 
-            {/* Side Glow Effects */}
+            {/* Side Glow Effect */}
             <Box
               sx={{
                 position: 'absolute',
-                right: -20,
+                right: -14,
                 top: '50%',
                 transform: 'translateY(-50%)',
-                width: '60px',
-                height: '100%',
-                background: `radial-gradient(ellipse at center, ${accentColor}33, transparent 70%)`,
-                filter: 'blur(15px)',
+                width: '40px',
+                height: '80%',
+                background: `radial-gradient(ellipse at center, ${accentColor}22, transparent 70%)`,
+                filter: 'blur(12px)',
                 pointerEvents: 'none',
               }}
             />
@@ -184,11 +181,11 @@ export const LyricsNotification: React.FC<LyricsNotificationProps> = ({
                 height: '2px',
                 background: `linear-gradient(90deg, 
                   transparent 0%,
-                  ${primaryColor}88 50%,
+                  ${primaryColor}77 50%,
                   transparent 100%
                 )`,
-                opacity: 0.8,
-                filter: 'blur(1px)',
+                opacity: 0.7,
+                filter: 'blur(0.5px)',
               }}
             />
 
@@ -196,9 +193,9 @@ export const LyricsNotification: React.FC<LyricsNotificationProps> = ({
             <motion.div
               animate={{
                 boxShadow: [
-                  `inset 0 0 20px ${accentColor}22`,
-                  `inset 0 0 40px ${accentColor}44`,
-                  `inset 0 0 20px ${accentColor}22`,
+                  `inset 0 0 14px ${accentColor}22`,
+                  `inset 0 0 20px ${accentColor}33`,
+                  `inset 0 0 14px ${accentColor}22`,
                 ],
               }}
               transition={{
@@ -219,43 +216,48 @@ export const LyricsNotification: React.FC<LyricsNotificationProps> = ({
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 0.2, duration: 0.4 }}
+                transition={{ delay: 0.15, duration: 0.35 }}
                 style={{
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  gap: '12px',
+                  gap: '8px',
                 }}
               >
-                {/* Music Icon Animation */}
-                <motion.span
-                  animate={{
-                    y: [0, -3, 0],
-                  }}
+                {/* Left Icon */}
+                <motion.div
+                  animate={{ y: [0, -2, 0] }}
                   transition={{
-                    duration: 1.5,
+                    duration: 1.4,
                     repeat: Infinity,
                     ease: 'easeInOut',
                   }}
                   style={{
-                    fontSize: '1.3em',
-                    textShadow: `0 0 10px ${accentColor}88`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
                   }}
                 >
-                  🎵
-                </motion.span>
+                  <MusicNoteRoundedIcon
+                    sx={{
+                      fontSize: '1.3rem',
+                      color: accentColor,
+                      textShadow: `0 0 8px ${accentColor}77`,
+                    }}
+                  />
+                </motion.div>
 
-                {/* Lyric Text with Shimmer */}
+                {/* Lyric Text */}
                 <motion.span
                   animate={{
                     textShadow: [
-                      `0 0 10px ${accentColor}44, 0 0 20px ${accentColor}22`,
-                      `0 0 20px ${accentColor}66, 0 0 40px ${accentColor}44`,
-                      `0 0 10px ${accentColor}44, 0 0 20px ${accentColor}22`,
+                      `0 0 8px ${accentColor}33, 0 0 16px ${accentColor}22`,
+                      `0 0 14px ${accentColor}55, 0 0 24px ${accentColor}33`,
+                      `0 0 8px ${accentColor}33, 0 0 16px ${accentColor}22`,
                     ],
                   }}
                   transition={{
-                    duration: 2.5,
+                    duration: 2,
                     repeat: Infinity,
                     ease: 'easeInOut',
                   }}
@@ -263,35 +265,40 @@ export const LyricsNotification: React.FC<LyricsNotificationProps> = ({
                   {lyric}
                 </motion.span>
 
-                {/* Right Music Icon Animation */}
-                <motion.span
-                  animate={{
-                    y: [0, 3, 0],
-                  }}
+                {/* Right Icon */}
+                <motion.div
+                  animate={{ y: [0, 2, 0] }}
                   transition={{
-                    duration: 1.5,
+                    duration: 1.4,
                     repeat: Infinity,
                     ease: 'easeInOut',
-                    delay: 0.3,
+                    delay: 0.25,
                   }}
                   style={{
-                    fontSize: '1.3em',
-                    textShadow: `0 0 10px ${accentColor}88`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
                   }}
                 >
-                  🎶
-                </motion.span>
+                  <QueueMusicRoundedIcon
+                    sx={{
+                      fontSize: '1.3rem',
+                      color: accentColor,
+                      textShadow: `0 0 8px ${accentColor}77`,
+                    }}
+                  />
+                </motion.div>
               </motion.div>
             </Box>
 
-            {/* Bottom Accent Line - Animated */}
+            {/* Bottom Accent Line */}
             <motion.div
               animate={{
                 width: ['0%', '100%', '100%', '0%'],
                 opacity: [0, 1, 1, 0],
               }}
               transition={{
-                duration: 4,
+                duration: 3.2,
                 repeat: Infinity,
                 ease: 'easeInOut',
               }}
@@ -299,13 +306,13 @@ export const LyricsNotification: React.FC<LyricsNotificationProps> = ({
                 position: 'absolute',
                 bottom: 0,
                 left: 0,
-                height: '3px',
+                height: '2px',
                 background: `linear-gradient(90deg, 
                   transparent 0%,
                   ${accentColor}ff 50%,
                   transparent 100%
                 )`,
-                filter: 'blur(1px)',
+                filter: 'blur(0.7px)',
               }}
             />
 
@@ -315,12 +322,12 @@ export const LyricsNotification: React.FC<LyricsNotificationProps> = ({
                 position: 'absolute',
                 top: 0,
                 left: 0,
-                width: '30px',
-                height: '30px',
-                borderTop: `2px solid ${accentColor}77`,
-                borderLeft: `2px solid ${accentColor}77`,
-                borderRadius: '16px 0 0 0',
-                opacity: 0.6,
+                width: '22px',
+                height: '22px',
+                borderTop: `2px solid ${accentColor}66`,
+                borderLeft: `2px solid ${accentColor}66`,
+                borderRadius: '12px 0 0 0',
+                opacity: 0.55,
               }}
             />
 
@@ -330,12 +337,12 @@ export const LyricsNotification: React.FC<LyricsNotificationProps> = ({
                 position: 'absolute',
                 bottom: 0,
                 right: 0,
-                width: '30px',
-                height: '30px',
-                borderBottom: `2px solid ${accentColor}77`,
-                borderRight: `2px solid ${accentColor}77`,
-                borderRadius: '0 0 16px 0',
-                opacity: 0.6,
+                width: '22px',
+                height: '22px',
+                borderBottom: `2px solid ${accentColor}66`,
+                borderRight: `2px solid ${accentColor}66`,
+                borderRadius: '0 0 12px 0',
+                opacity: 0.55,
               }}
             />
           </Box>

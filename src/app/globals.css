@@ -1,12 +1,19 @@
-/* ===== Tailwind CSS v4 Import ===== */
+/* ===== Tailwind CSS v4 Import (ต้องอยู่บนสุด) ===== */
 @import "tailwindcss";
 
-/* ของเดิมคุณทั้งหมดด้านล่างนี้ */
+/* ===== Global Reset & Base Styles ===== */
 
-* {
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+
+  /* Firefox scrollbar */
+  scrollbar-color: rgba(var(--color-secondary-rgb), 0.3)
+    rgba(255, 255, 255, 0.05);
+  scrollbar-width: thin;
 }
 
 /* ✅ CSS Custom Properties สำหรับธีม */
@@ -30,6 +37,7 @@ html {
 }
 
 body {
+  min-height: 100vh;
   background: linear-gradient(
     135deg,
     var(--color-dark) 0%,
@@ -43,7 +51,7 @@ body {
   animation: pageEnter 0.5s ease-out;
 }
 
-/* ✅ Scrollbar Styling */
+/* ✅ Scrollbar Styling (Webkit) */
 ::-webkit-scrollbar {
   width: 12px;
 }
@@ -62,13 +70,6 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(var(--color-secondary-rgb), 0.6);
   box-shadow: 0 0 15px rgba(var(--color-primary-rgb), 0.3);
-}
-
-/* Firefox Scrollbar */
-* {
-  scrollbar-color: rgba(var(--color-secondary-rgb), 0.3)
-    rgba(255, 255, 255, 0.05);
-  scrollbar-width: thin;
 }
 
 /* ✅ Smooth animations */
@@ -124,7 +125,8 @@ body {
 }
 
 @keyframes bounce {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0);
   }
   50% {
@@ -133,7 +135,8 @@ body {
 }
 
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0.6;
     transform: scale(1);
   }
@@ -214,7 +217,7 @@ select:focus {
   color: rgba(255, 255, 255, 0.4);
 }
 
-/* ✅ Responsive text selection */
+/* ✅ Mobile scrollbar tweak */
 @media (max-width: 768px) {
   ::-webkit-scrollbar {
     width: 8px;
@@ -248,7 +251,7 @@ select:focus {
 }
 
 /* ================================
-   🎂 Cake-specific Styles (Plain CSS)
+   🎂 Cake-specific Styles
    ================================ */
 
 .cake-container {
@@ -259,7 +262,12 @@ select:focus {
   align-items: center;
   justify-content: center;
   position: relative;
-  background: linear-gradient(135deg, #0f172a 0%, #0c0f1b 50%, #1a0f2e 100%);
+  background: linear-gradient(
+    135deg,
+    #0f172a 0%,
+    #0c0f1b 50%,
+    #1a0f2e 100%
+  );
   overflow: hidden;
 }
 
@@ -276,7 +284,11 @@ select:focus {
 }
 
 .text-gradient {
-  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  background: linear-gradient(
+    135deg,
+    var(--color-primary),
+    var(--color-accent)
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

@@ -1,6 +1,6 @@
 // 📁 src/app/theme/designSystem.ts
 export const DESIGN_SYSTEM = {
-  // ✅ Breakpoints
+  // ✅ Breakpoints (ใช้เป็น reference ใน sx)
   breakpoints: {
     xs: 600,
     sm: 960,
@@ -20,7 +20,8 @@ export const DESIGN_SYSTEM = {
       py: { xs: 2, sm: 2.5, md: 3 },
     },
     button: {
-      py: { xs: 0.9, sm: 1.1, md: 1.3 },
+      // ปรับให้ mobile padding ไม่เยอะเกิน จะได้ไม่รู้สึกหน่วงตอนกด
+      py: { xs: 0.8, sm: 1.0, md: 1.2 },
     },
   },
 
@@ -58,35 +59,38 @@ export const DESIGN_SYSTEM = {
   },
 
   // ✅ Colors & Gradients
-  background: 'linear-gradient(135deg, #0f172a 0%, #0c0f1b 50%, #1a0f2e 100%)',
-  cardBg: (accentColor: string) =>
-    `linear-gradient(135deg, rgba(15,23,42,0.98), rgba(15,118,110,0.95))`,
+  background:
+    'linear-gradient(135deg, #0f172a 0%, #0c0f1b 50%, #1a0f2e 100%)',
 
-  // ✅ Shadows
+  // ใช้ accentColor จริง ๆ (เดิมรับ parameter มาแต่ไม่ได้ใช้)
+  cardBg: (accentColor: string) =>
+    `linear-gradient(135deg, rgba(15,23,42,0.98), ${accentColor}f2)`,
+
+  // ✅ Shadows (ลดความโหดของเงานิดหน่อยให้ลื่นบนมือถือ)
   shadows: {
     lifted: (color: string) => `
-      0 40px 80px rgba(0,0,0,0.8),
-      0 20px 40px ${color}44,
-      inset -2px -2px 8px rgba(0,0,0,0.3),
-      inset 2px 2px 8px rgba(255,255,255,0.2)
+      0 24px 48px rgba(0,0,0,0.75),
+      0 16px 32px ${color}33,
+      inset -1px -1px 6px rgba(0,0,0,0.35),
+      inset 1px 1px 4px rgba(255,255,255,0.18)
     `,
-    card: `0 20px 50px rgba(0,0,0,0.95)`,
-    button: (color: string) => `0 12px 32px ${color}66`,
-    buttonHover: (color: string) => `0 16px 40px ${color}88`,
+    card: `0 18px 40px rgba(0,0,0,0.9)`,
+    button: (color: string) => `0 10px 24px ${color}55`,
+    buttonHover: (color: string) => `0 12px 32px ${color}77`,
   },
 
-  // ✅ Transitions
+  // ✅ Transitions (fast/normal ใช้เยอะในปุ่ม)
   transitions: {
-    fast: 'all 0.2s ease',
-    normal: 'all 0.3s ease',
-    slow: 'all 0.6s ease',
+    fast: 'all 0.18s ease-out',
+    normal: 'all 0.28s ease-out',
+    slow: 'all 0.55s ease',
   },
 
   // ✅ Animations
   animations: {
     pulse: `@keyframes pulse {
       0%, 100% { transform: scale(1); opacity: 0.6; }
-      50% { transform: scale(1.1); opacity: 0.9; }
+      50% { transform: scale(1.04); opacity: 0.9; }
     }`,
   },
 };

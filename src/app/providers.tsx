@@ -91,15 +91,24 @@ const ThemeContext = createContext<{
 export const useThemeContext = () => useContext(ThemeContext);
 
 export default function Providers({ children }: { children: React.ReactNode }) {
-  const [currentTheme, setCurrentTheme] = useState<keyof typeof colorThemes>(
-    'emerald'
-  );
-  const [mounted, setMounted] = useState(false);
+  const [currentTheme, setCurrentTheme] = useState<keyof typeof colorThemes>('emerald');
 
+  // โหลด theme จาก localStorage ครั้งแรก (เฉพาะบน client)
   useEffect(() => {
-    setMounted(true);
+    try {
+      const savedTheme = window.localStorage.getItem('theme') as
+        | keyof typeof colorThemes
+        | null;
+
+      if (savedTheme && colorThemes[savedTheme]) {
+        setCurrentTheme(savedTheme);
+      }
+    } catch {
+      // ถ้า localStorage ใช้ไม่ได้ (เช่น incognito บางกรณี) ก็ข้ามไป
+    }
   }, []);
 
+  // อัปเดต CSS variables + localStorage ทุกครั้งที่ theme เปลี่ยน
   useEffect(() => {
     const colors = colorThemes[currentTheme];
     const root = document.documentElement;
@@ -114,19 +123,12 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     root.style.setProperty('--color-accent', colors.accent);
     root.style.setProperty('--color-accent-rgb', colors.accentRgb);
 
-    if (mounted) {
-      localStorage.setItem('theme', currentTheme);
+    try {
+      window.localStorage.setItem('theme', currentTheme);
+    } catch {
+      // เผื่อ localStorage พัง ไม่ต้องทำอะไร
     }
-  }, [currentTheme, mounted]);
-
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme') as
-      | keyof typeof colorThemes
-      | null;
-    if (savedTheme && colorThemes[savedTheme]) {
-      setCurrentTheme(savedTheme);
-    }
-  }, []);
+  }, [currentTheme]);
 
   const colors = colorThemes[currentTheme];
 
@@ -145,8 +147,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     },
   });
 
-  if (!mounted) return <>{children}</>;
-
+  // ไม่ต้องเช็ค mounted ตรงนี้แล้ว ให้ ThemeProvider อยู่ตั้งแต่แรก
   return (
     <ThemeContext.Provider value={{ currentTheme, setCurrentTheme }}>
       <ThemeProvider theme={theme}>
