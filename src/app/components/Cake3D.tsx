@@ -562,12 +562,12 @@ export default function Cake3D({
         </Box>
       </motion.div>
 
-      {/* Wish Dialog */}
+      {/* Wish Dialog - FIXED */}
       <Dialog
         open={showWishDialog}
         onClose={() => setShowWishDialog(false)}
         PaperProps={{
-          sx={{
+          sx: {
             borderRadius: 3,
             background: `linear-gradient(135deg, rgba(15,23,42,0.98), rgba(20,40,80,0.95))`,
             border: `2px solid ${accentColor}88`,

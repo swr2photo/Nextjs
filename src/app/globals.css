@@ -1,9 +1,6 @@
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
-
-/* DaisyUI */
-/* Remove @plugin and use import instead */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /* ของเดิมคุณทั้งหมดด้านล่างนี้ */
 
@@ -229,7 +226,6 @@ select:focus {
    📱 EndScreen Phone Customization
    ================================ */
 
-/* ปรับกรอบของ EndScreenPhone ให้คล้ายจอมือถือจริง */
 .endscreen-phone.mockup-phone {
   border-radius: 2.4rem;
   border-width: 4px;
@@ -238,25 +234,65 @@ select:focus {
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9);
 }
 
-/* ตัดเอฟเฟกต์ตกแต่งเดิมของ daisyUI ที่ทำให้กรอบดูหนา/เหลี่ยม */
 .endscreen-phone.mockup-phone::before {
   display: none;
 }
 
-/* โค้งขอบจอด้านในให้กลมเนียน */
 .endscreen-phone .mockup-phone-display {
   border-radius: 2rem;
   overflow: hidden;
 }
 
-/* เอา scroll ด้านในจอออกไปเลย */
 .phone-scroll-content {
   max-height: none;
   overflow: visible;
 }
 
 /* ================================
-   🎂 Cake-specific Styles
+   🎂 Cake-specific Styles (Plain CSS)
    ================================ */
 
-/* ยังต้องการเพิ่ม styles อื่นๆหรือไม่? */
+.cake-container {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: linear-gradient(135deg, #0f172a 0%, #0c0f1b 50%, #1a0f2e 100%);
+  overflow: hidden;
+}
+
+.cake-button {
+  border-radius: 9999px;
+  font-weight: bold;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.cake-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.blur-glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.glow-primary {
+  box-shadow: 0 0 20px rgba(var(--color-primary-rgb), 0.5);
+}
+
+.glow-primary:hover {
+  box-shadow: 0 0 40px rgba(var(--color-accent-rgb), 0.8);
+}
