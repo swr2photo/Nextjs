@@ -13,12 +13,12 @@ import { useState, useEffect, useRef } from 'react';
 import Palette from '@mui/icons-material/Palette';
 import type { StoryScene } from './components/MusicPlayer';
 
-// ✅ FIX: Import paths
+// ✅ Components
 import HappyBirthday from './components/HappyBirthday';
 import MusicPlayer from './components/MusicPlayer';
 import Cake3D from './components/Cake3D';
 import { GiftBox3D } from './components/gift';
-import { useThemeContext, colorThemes, type colorThemes as ColorThemesType } from './providers';
+import { useThemeContext, colorThemes } from './providers';
 import { MemoryGallery } from './components/memory';
 import { memoryImages } from './utils/memories';
 
@@ -107,7 +107,7 @@ export default function HomeClient() {
   const [duration, setDuration] = useState(0);
   const [cakeBlewCandles, setCakeBlewCandles] = useState(false);
 
-  const themeContext = useThemeContext();
+  const { currentTheme, setCurrentTheme, isThemeChanging } = useThemeContext();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -179,9 +179,8 @@ export default function HomeClient() {
     return null;
   }
 
-  // ✅ FIX: Type guard for currentColors
-  const currentTheme = themeContext.currentTheme as keyof typeof colorThemes;
-  const currentColors = colorThemes[currentTheme] || colorThemes.emerald;
+  const currentThemeKey = currentTheme as keyof typeof colorThemes;
+  const currentColors = colorThemes[currentThemeKey] || colorThemes.emerald;
 
   // ==================== SCENE DATA ====================
   const sceneData: StoryScene = {
@@ -222,12 +221,14 @@ export default function HomeClient() {
   };
 
   const handleThemeClick = (event: React.MouseEvent<HTMLElement>) => {
+    if (isThemeChanging) return; // กันกดรัวตอนกำลังเปลี่ยน
     setAnchorEl(event.currentTarget);
   };
 
-  const handleThemeSelect = (theme: keyof typeof colorThemes) => {
-    themeContext.setCurrentTheme(theme);
+  const handleThemeSelect = (themeKey: keyof typeof colorThemes) => {
+    // ปิดเมนูก่อนแล้วค่อยเปลี่ยนธีม (ให้ UX ลื่น)
     setAnchorEl(null);
+    setCurrentTheme(themeKey);
   };
 
   const handleMemoryClose = () => {
@@ -280,18 +281,27 @@ export default function HomeClient() {
         <IconButton
           onClick={handleThemeClick}
           aria-label="เลือกธีม"
-          title="เปลี่ยนธีมสี"
+          title={isThemeChanging ? 'กำลังเปลี่ยนธีม...' : 'เปลี่ยนธีมสี'}
+          disabled={isThemeChanging}
           sx={{
             background: `${currentColors.primary}20`,
             border: `2px solid ${currentColors.primary}`,
             color: currentColors.primary,
-            transition: 'all 0.3s ease',
+            transition: 'all 0.25s ease',
             '&:hover': {
               background: `${currentColors.primary}40`,
             },
+            '&.Mui-disabled': {
+              opacity: 0.6,
+            },
           }}
         >
-          <Palette />
+          <Palette
+            sx={{
+              transition: 'transform 0.3s ease',
+              transform: isThemeChanging ? 'rotate(180deg)' : 'none',
+            }}
+          />
         </IconButton>
 
         <Menu
@@ -303,6 +313,7 @@ export default function HomeClient() {
               background: 'rgba(255, 255, 255, 0.95)',
               backdropFilter: 'blur(10px)',
               borderRadius: '12px',
+              minWidth: 220,
             },
           }}
         >
@@ -310,7 +321,8 @@ export default function HomeClient() {
             <MenuItem
               key={key}
               onClick={() => handleThemeSelect(key as keyof typeof colorThemes)}
-              selected={themeContext.currentTheme === key}
+              selected={currentTheme === key}
+              disabled={isThemeChanging}
               sx={{
                 '&.Mui-selected': {
                   backgroundColor: `${color.primary}20`,
@@ -404,7 +416,7 @@ export default function HomeClient() {
             musicUrl={sceneData.url}
             onClose={handleMemoryClose}
             onGoToGift={handleGoToGift}
-            themeKey={currentTheme}
+            themeKey={currentThemeKey}
           />
         </Box>
       )}

@@ -2,6 +2,9 @@
 
 import { Box } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
+import MusicNoteRoundedIcon from '@mui/icons-material/MusicNoteRounded';
+import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
+import ReplayRoundedIcon from '@mui/icons-material/ReplayRounded';
 
 interface LyricsData {
   text: string;
@@ -69,38 +72,38 @@ export default function LyricsDisplay({
         }}
       />
 
-      {/* Previous Lyric (slide up + blur + fade) */}
+      {/* Previous Lyric */}
       <AnimatePresence mode="wait">
         {isPlaying && prevLyric ? (
           <motion.div
             key={`prev-${prevLyric.startTime}`}
-            initial={{ 
-              opacity: 0, 
-              y: 80, 
-              scale: 0.8, 
+            initial={{
+              opacity: 0,
+              y: 80,
+              scale: 0.8,
               rotateX: 60,
-              z: -200 
+              z: -200,
             }}
-            animate={{ 
-              opacity: 0.3, 
-              y: 0, 
-              scale: 0.82, 
+            animate={{
+              opacity: 0.3,
+              y: 0,
+              scale: 0.82,
               rotateX: 0,
-              z: -100 
+              z: -100,
             }}
-            exit={{ 
-              opacity: 0, 
-              y: -80, 
-              scale: 0.8, 
+            exit={{
+              opacity: 0,
+              y: -80,
+              scale: 0.8,
               rotateX: -60,
-              z: -200 
+              z: -200,
             }}
-            transition={{ 
-              duration: 0.6, 
+            transition={{
+              duration: 0.6,
               type: 'spring',
               stiffness: 100,
               damping: 25,
-              mass: 1
+              mass: 1,
             }}
             style={{
               display: 'flex',
@@ -131,41 +134,41 @@ export default function LyricsDisplay({
         ) : null}
       </AnimatePresence>
 
-      {/* Current Lyric (main 3D focus) */}
+      {/* Current Lyric */}
       <AnimatePresence mode="wait">
         {isPlaying && currentLyric ? (
           <motion.div
             key={`current-${currentLyric.startTime}`}
-            initial={{ 
-              opacity: 0, 
-              y: 80, 
-              scale: 0.85, 
+            initial={{
+              opacity: 0,
+              y: 80,
+              scale: 0.85,
               rotateX: -60,
               rotateY: -15,
-              z: 0 
+              z: 0,
             }}
-            animate={{ 
-              opacity: 1, 
-              y: 0, 
-              scale: 1, 
+            animate={{
+              opacity: 1,
+              y: 0,
+              scale: 1,
               rotateX: 0,
               rotateY: 0,
-              z: 0 
+              z: 0,
             }}
-            exit={{ 
-              opacity: 0, 
-              y: -80, 
-              scale: 0.85, 
+            exit={{
+              opacity: 0,
+              y: -80,
+              scale: 0.85,
               rotateX: 60,
               rotateY: 15,
-              z: 0 
+              z: 0,
             }}
-            transition={{ 
-              duration: 0.7, 
+            transition={{
+              duration: 0.7,
               type: 'spring',
               stiffness: 120,
               damping: 20,
-              mass: 0.9
+              mass: 0.9,
             }}
             style={{
               display: 'flex',
@@ -179,16 +182,16 @@ export default function LyricsDisplay({
             }}
           >
             <motion.div
-              animate={{ 
-                rotateX: [0, 3, -3, 0], 
+              animate={{
+                rotateX: [0, 3, -3, 0],
                 rotateY: [-1, 1, -1, 0],
-                y: [0, -8, 0]
+                y: [0, -8, 0],
               }}
-              transition={{ 
-                duration: 6, 
-                repeat: Infinity, 
+              transition={{
+                duration: 6,
+                repeat: Infinity,
                 ease: 'easeInOut',
-                times: [0, 0.33, 0.66, 1]
+                times: [0, 0.33, 0.66, 1],
               }}
               style={{
                 transformStyle: 'preserve-3d',
@@ -217,7 +220,8 @@ export default function LyricsDisplay({
                     0 0 40px ${accentColor}40,
                     0 0 80px ${accentColor}20
                   `,
-                  filter: 'drop-shadow(0 0 25px rgba(255, 255, 255, 0.15))',
+                  filter:
+                    'drop-shadow(0 0 25px rgba(255, 255, 255, 0.15))',
                 }}
               >
                 {currentLyric.text}
@@ -225,6 +229,7 @@ export default function LyricsDisplay({
             </motion.div>
           </motion.div>
         ) : (
+          // 🟣 Fallback state – เปลี่ยนอิโมจิเป็น MUI Icons
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -235,68 +240,87 @@ export default function LyricsDisplay({
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: 2,
+              gap: 16,
               zIndex: 2,
               flex: 1,
             }}
           >
             <motion.div
               animate={{ scale: [1, 1.2, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
-              style={{ fontSize: '2.5rem' }}
+              transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
             >
-              🎵
+              <Box
+                sx={{
+                  width: 64,
+                  height: 64,
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  background: `radial-gradient(circle, ${accentColor}55, transparent 65%)`,
+                  boxShadow: `0 0 24px ${accentColor}66`,
+                }}
+              >
+                {hasEnded ? (
+                  <ReplayRoundedIcon sx={{ fontSize: 32, color: '#fff' }} />
+                ) : isPlaying ? (
+                  <MusicNoteRoundedIcon sx={{ fontSize: 32, color: '#fff' }} />
+                ) : (
+                  <PlayArrowRoundedIcon sx={{ fontSize: 32, color: '#fff' }} />
+                )}
+              </Box>
             </motion.div>
+
             <Box
               sx={{
-                color: 'rgba(255, 255, 255, 0.5)',
+                color: 'rgba(255, 255, 255, 0.6)',
                 textAlign: 'center',
                 fontSize: { xs: '0.9rem', md: '1rem' },
                 fontStyle: 'italic',
               }}
             >
               {isPlaying
-                ? 'ไม่มีเนื้อเพลงในตอนนี้'
+                ? 'ยังไม่มีเนื้อเพลงในช่วงนี้'
                 : hasEnded
-                ? 'กดรีเพลเพื่อเล่นอีกครั้ง'
-                : 'กดเล่นเพลงเลยน้า...'}
+                ? 'กดเล่นอีกครั้งเพื่อเริ่มใหม่จากต้นเพลง'
+                : 'กดปุ่มเล่นเพื่อเริ่มเพลงพร้อมเนื้อร้องเลยน้า'}
             </Box>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Next Lyric (slide down + blur + fade) */}
+      {/* Next Lyric */}
       <AnimatePresence mode="wait">
         {isPlaying && nextLyric ? (
           <motion.div
             key={`next-${nextLyric.startTime}`}
-            initial={{ 
-              opacity: 0, 
-              y: -80, 
-              scale: 0.8, 
+            initial={{
+              opacity: 0,
+              y: -80,
+              scale: 0.8,
               rotateX: -60,
-              z: -200 
+              z: -200,
             }}
-            animate={{ 
-              opacity: 0.3, 
-              y: 0, 
-              scale: 0.82, 
+            animate={{
+              opacity: 0.3,
+              y: 0,
+              scale: 0.82,
               rotateX: 0,
-              z: -100 
+              z: -100,
             }}
-            exit={{ 
-              opacity: 0, 
-              y: 80, 
-              scale: 0.8, 
+            exit={{
+              opacity: 0,
+              y: 80,
+              scale: 0.8,
               rotateX: 60,
-              z: -200 
+              z: -200,
             }}
-            transition={{ 
-              duration: 0.6, 
+            transition={{
+              duration: 0.6,
               type: 'spring',
               stiffness: 100,
               damping: 25,
-              mass: 1
+              mass: 1,
             }}
             style={{
               display: 'flex',
@@ -326,23 +350,6 @@ export default function LyricsDisplay({
           </motion.div>
         ) : null}
       </AnimatePresence>
-
-      <style jsx>{`
-        @keyframes float3d {
-          0%, 100% {
-            transform: translateY(-8px) rotateX(0deg) rotateY(0deg);
-          }
-          25% {
-            transform: translateY(-12px) rotateX(2deg) rotateY(-1deg);
-          }
-          50% {
-            transform: translateY(-4px) rotateX(0deg) rotateY(1.5deg);
-          }
-          75% {
-            transform: translateY(-10px) rotateX(-2deg) rotateY(0deg);
-          }
-        }
-      `}</style>
     </Box>
   );
 }

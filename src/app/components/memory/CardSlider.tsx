@@ -7,7 +7,6 @@ import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import type React from 'react';
 import MemoryCard from './MemoryCard';
 
-// ← ย้ายมาจากที่เดิม
 export interface MemoryImage {
   id: string;
   url: string;
@@ -52,16 +51,10 @@ export const CardSlider: React.FC<CardSliderProps> = ({
   appleGlassStyle,
   isVideoMemory,
 }) => {
-  const radius = 280;
+  // ✅ เพิ่มระยะห่างระหว่างการ์ด
+  const radius = 340;          // เดิม ~280 → ถ่างออก
   const cardSize = 220;
   const total = items.length;
-
-  const shimmerKeyframes = `
-    @keyframes shimmer {
-      0% { background-position: -1000px 0; }
-      100% { background-position: 1000px 0; }
-    }
-  `;
 
   return (
     <Box
@@ -77,8 +70,6 @@ export const CardSlider: React.FC<CardSliderProps> = ({
         justifyContent: 'center',
       }}
     >
-      <style>{shimmerKeyframes}</style>
-
       {/* ปุ่ม Prev */}
       <IconButton
         onClick={onPrev}
@@ -127,14 +118,14 @@ export const CardSlider: React.FC<CardSliderProps> = ({
         <ChevronRightRoundedIcon fontSize="large" />
       </IconButton>
 
-      {/* Center Circle Light */}
+      {/* แสงตรงกลาง */}
       <motion.div
-        animate={{ scale: [1, 1.1, 1], opacity: [0.5, 0.8, 0.5] }}
+        animate={{ scale: [1, 1.1, 1], opacity: [0.4, 0.75, 0.4] }}
         transition={{ duration: 3, repeat: Infinity }}
         style={{
           position: 'absolute',
-          width: 200,
-          height: 200,
+          width: 220,
+          height: 220,
           borderRadius: '50%',
           background: `radial-gradient(circle, ${primaryAccent}22, transparent 70%)`,
           filter: 'blur(60px)',
@@ -142,7 +133,7 @@ export const CardSlider: React.FC<CardSliderProps> = ({
         }}
       />
 
-      {/* Container 3D */}
+      {/* 3D Container */}
       <Box
         sx={{
           position: 'relative',
@@ -153,18 +144,21 @@ export const CardSlider: React.FC<CardSliderProps> = ({
         }}
       >
         {items.map((m, idx) => {
-          const angle = ((idx - activeIndex) * (360 / total)) * (Math.PI / 180);
-          const radius3d = radius;
+          const offset = idx - activeIndex;
+          const angleDeg = (offset * 360) / total;
+          const angleRad = (angleDeg * Math.PI) / 180;
 
-          const x = Math.sin(angle) * radius3d;
-          const z = Math.cos(angle) * radius3d;
-          const rotateY = ((idx - activeIndex) * (360 / total)) % 360;
+          const x = Math.sin(angleRad) * radius;
+          const z = Math.cos(angleRad) * radius;
+          const rotateY = angleDeg;
 
-          const distance = Math.abs(Math.cos(angle));
+          const distance = Math.abs(Math.cos(angleRad));
           const isActive = idx === activeIndex;
-          const scale = isActive ? 1 : 0.6 + distance * 0.3;
-          const opacity = isActive ? 1 : 0.15 + distance * 0.3;
-          const blurAmount = isActive ? 0 : 3 + (1 - distance) * 8;
+
+          // ✅ ปรับ scale + opacity ของการ์ดด้านหลังให้เล็กลง/ถอยห่าง
+          const scale = isActive ? 1 : 0.65 + distance * 0.2;
+          const opacity = isActive ? 1 : 0.3 + distance * 0.45;
+          const blurAmount = isActive ? 0 : 2 + (1 - distance) * 4;
 
           const displayUrl = heicFallback(m.url);
 

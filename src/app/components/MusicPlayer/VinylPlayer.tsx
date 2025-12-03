@@ -86,14 +86,14 @@ export default function VinylPlayer({
               }}
             />
 
-            {/* Center label */}
+            {/* Center label ผูกกับ primaryColor */}
             <Box
               sx={{
                 position: 'absolute',
                 inset: '34%',
                 borderRadius: '50%',
-                background: 'radial-gradient(circle, #f97316, #b91c1c)',
-                boxShadow: '0 0 15px rgba(248,113,113,0.8)',
+                background: `radial-gradient(circle, ${primaryColor}, #b91c1c)`,
+                boxShadow: `0 0 15px ${primaryColor}`,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',

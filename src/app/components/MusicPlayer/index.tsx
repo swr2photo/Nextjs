@@ -1,10 +1,21 @@
 // components/MusicPlayer/index.tsx
 'use client';
 
-import { Box, Container, Card, CardContent, IconButton } from '@mui/material';
+import {
+  Box,
+  Container,
+  Card,
+  CardContent,
+  IconButton,
+  Stack,
+} from '@mui/material';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import ReplayIcon from '@mui/icons-material/Replay';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
+import MusicNoteRoundedIcon from '@mui/icons-material/MusicNoteRounded';
+import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
+import HourglassEmptyRoundedIcon from '@mui/icons-material/HourglassEmptyRounded';
+import ChatBubbleOutlineRoundedIcon from '@mui/icons-material/ChatBubbleOutlineRounded';
 import { motion } from 'framer-motion';
 import { useState, useRef, useEffect } from 'react';
 
@@ -74,13 +85,13 @@ export default function MusicPlayer({
   const restrictedEnd = scene.restrictedEnd ?? duration;
   const coverImage = scene.coverUrl || '/images/นับหนึ่ง.jpg';
 
-  // 🎵 ใช้ custom hook เพื่อหา current lyric
+  // ใช้ custom hook เพื่อหา current lyric
   const { currentLyric, prevLyric, nextLyric } = useCurrentLyric(
     scene.lyrics,
     currentTime
   );
 
-  // ✅ Setup audio on mount
+  // Setup audio on mount
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -106,7 +117,7 @@ export default function MusicPlayer({
     };
   }, [onTimeUpdate, onPlayEnd]);
 
-  // ⏱️ Update time
+  // Update time
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -142,7 +153,7 @@ export default function MusicPlayer({
       await audio.play();
       setIsPlaying(true);
       onPlayStart?.();
-    } catch (error) {
+    } catch {
       setIsPlaying(false);
     }
   };
@@ -157,7 +168,7 @@ export default function MusicPlayer({
       await audio.play();
       setIsPlaying(true);
       onPlayStart?.();
-    } catch (e) {
+    } catch {
       setIsPlaying(false);
     }
   };
@@ -216,9 +227,15 @@ export default function MusicPlayer({
               WebkitTextFillColor: 'transparent',
               m: 0,
               letterSpacing: '0.03em',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 1,
             }}
           >
-            ฟังเพลงก่อนนะ 💚
+            ฟังเพลงก่อนนะ
+            <FavoriteRoundedIcon
+              sx={{ fontSize: { xs: 24, md: 28 }, color: accentColor }}
+            />
           </Box>
         </motion.div>
 
@@ -308,9 +325,16 @@ export default function MusicPlayer({
                     fontStyle: 'italic',
                     lineHeight: 1.8,
                     mb: 4,
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    gap: 1.2,
+                    justifyContent: 'center',
                   }}
                 >
-                  💭 {scene.meaning}
+                  <ChatBubbleOutlineRoundedIcon
+                    sx={{ fontSize: 20, color: accentColor, mt: 0.3 }}
+                  />
+                  <span>{scene.meaning}</span>
                 </Box>
               </Box>
 
@@ -381,7 +405,10 @@ export default function MusicPlayer({
                 }}
               >
                 {!isPlaying && !hasEnded && (
-                  <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+                  <motion.div
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
                     <IconButton
                       onClick={handlePlay}
                       disabled={!isAudioReady}
@@ -421,7 +448,10 @@ export default function MusicPlayer({
                 )}
 
                 {!isPlaying && hasEnded && (
-                  <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+                  <motion.div
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
                     <IconButton
                       onClick={handleReplay}
                       sx={{
@@ -450,9 +480,14 @@ export default function MusicPlayer({
                     fontSize: '0.9rem',
                     color: accentColor,
                     mt: 2,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: 1,
                   }}
                 >
-                  ⏳ กำลังโหลดเพลง...
+                  <HourglassEmptyRoundedIcon sx={{ fontSize: 18 }} />
+                  <span>กำลังโหลดเพลง...</span>
                 </Box>
               )}
             </CardContent>
@@ -467,22 +502,35 @@ export default function MusicPlayer({
           viewport={{ once: true, amount: 0.2 }}
           style={{ textAlign: 'center', marginTop: 50 }}
         >
-          <Box
+          <Stack
+            direction="row"
+            spacing={1}
+            justifyContent="center"
+            alignItems="center"
             sx={{
               fontSize: { xs: '0.95rem', md: '1.1rem' },
               color: 'rgba(255, 255, 255, 0.75)',
               fontStyle: 'italic',
             }}
           >
-            "เพลงเพราะมั้ย ฟังต่อให้จบหนาา" 🎵💚
-          </Box>
+            <MusicNoteRoundedIcon sx={{ fontSize: 20, color: accentColor }} />
+            <span>เพลงเพราะมั้ย ฟังต่อให้จบหนาา</span>
+            <FavoriteRoundedIcon sx={{ fontSize: 20, color: primaryColor }} />
+          </Stack>
         </motion.div>
       </Container>
 
       <style jsx>{`
         @keyframes pulse {
-          0%, 100% { transform: scale(1); opacity: 0.8; }
-          50% { transform: scale(1.2); opacity: 0.4; }
+          0%,
+          100% {
+            transform: scale(1);
+            opacity: 0.8;
+          }
+          50% {
+            transform: scale(1.2);
+            opacity: 0.4;
+          }
         }
       `}</style>
     </Box>

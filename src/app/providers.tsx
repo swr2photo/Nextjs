@@ -2,7 +2,15 @@
 
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import { useState, createContext, useContext, useEffect } from 'react';
+import {
+  useState,
+  createContext,
+  useContext,
+  useEffect,
+  useTransition,
+  useCallback,
+  useMemo,
+} from 'react';
 
 export const colorThemes = {
   emerald: {
@@ -79,36 +87,41 @@ export const colorThemes = {
   },
 };
 
+type ThemeKey = keyof typeof colorThemes;
+
 // Theme Context
 const ThemeContext = createContext<{
-  currentTheme: keyof typeof colorThemes;
-  setCurrentTheme: (theme: keyof typeof colorThemes) => void;
+  currentTheme: ThemeKey;
+  setCurrentTheme: (theme: ThemeKey) => void;
+  isThemeChanging: boolean;
 }>({
   currentTheme: 'emerald',
   setCurrentTheme: () => {},
+  isThemeChanging: false,
 });
 
 export const useThemeContext = () => useContext(ThemeContext);
 
 export default function Providers({ children }: { children: React.ReactNode }) {
-  const [currentTheme, setCurrentTheme] = useState<keyof typeof colorThemes>('emerald');
+  const [currentTheme, setCurrentThemeState] = useState<ThemeKey>('emerald');
+
+  // ใช้ transition เพื่อลดอาการค้างเวลาเปลี่ยนธีม
+  const [isPending, startTransition] = useTransition();
 
   // โหลด theme จาก localStorage ครั้งแรก (เฉพาะบน client)
   useEffect(() => {
     try {
-      const savedTheme = window.localStorage.getItem('theme') as
-        | keyof typeof colorThemes
-        | null;
-
+      const savedTheme = window.localStorage.getItem('theme') as ThemeKey | null;
       if (savedTheme && colorThemes[savedTheme]) {
-        setCurrentTheme(savedTheme);
+        // ใช้ setState ตรง ๆ ไม่ต้อง transition (แค่ initial)
+        setCurrentThemeState(savedTheme);
       }
     } catch {
-      // ถ้า localStorage ใช้ไม่ได้ (เช่น incognito บางกรณี) ก็ข้ามไป
+      // ถ้า localStorage พัง ก็ปล่อยเป็นค่าดีฟอลต์ไป
     }
   }, []);
 
-  // อัปเดต CSS variables + localStorage ทุกครั้งที่ theme เปลี่ยน
+  // อัปเดต CSS variables + localStorage ทุกครั้งที่ currentTheme เปลี่ยน
   useEffect(() => {
     const colors = colorThemes[currentTheme];
     const root = document.documentElement;
@@ -130,26 +143,43 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     }
   }, [currentTheme]);
 
-  const colors = colorThemes[currentTheme];
+  // ฟังก์ชันเปลี่ยนธีมแบบ transition-friendly
+  const setCurrentTheme = useCallback(
+    (theme: ThemeKey) => {
+      startTransition(() => {
+        setCurrentThemeState((prev) => (prev === theme ? prev : theme));
+      });
+    },
+    [startTransition],
+  );
 
-  const theme = createTheme({
-    palette: {
-      mode: 'dark',
-      primary: { main: colors.primary },
-      secondary: { main: colors.secondary },
-      background: {
-        default: colors.dark,
-        paper: colors.paper,
+  // MUI theme – memoize ตาม currentTheme
+  const theme = useMemo(() => {
+    const colors = colorThemes[currentTheme];
+    return createTheme({
+      palette: {
+        mode: 'dark',
+        primary: { main: colors.primary },
+        secondary: { main: colors.secondary },
+        background: {
+          default: colors.dark,
+          paper: colors.paper,
+        },
       },
-    },
-    typography: {
-      fontFamily: 'var(--font-noto-sans-thai), sans-serif',
-    },
-  });
+      typography: {
+        fontFamily: 'var(--font-noto-sans-thai), sans-serif',
+      },
+    });
+  }, [currentTheme]);
 
-  // ไม่ต้องเช็ค mounted ตรงนี้แล้ว ให้ ThemeProvider อยู่ตั้งแต่แรก
   return (
-    <ThemeContext.Provider value={{ currentTheme, setCurrentTheme }}>
+    <ThemeContext.Provider
+      value={{
+        currentTheme,
+        setCurrentTheme,
+        isThemeChanging: isPending,
+      }}
+    >
       <ThemeProvider theme={theme}>
         <CssBaseline />
         {children}

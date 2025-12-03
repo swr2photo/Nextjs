@@ -1,9 +1,16 @@
 'use client';
 
-import { Box, Container, Typography } from '@mui/material';
+import { Box, Container, Typography, Button, Stack } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import type React from 'react';
+
+// MUI Icons แทนอิโมจิ
+import CelebrationRoundedIcon from '@mui/icons-material/CelebrationRounded';
+import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
+import CardGiftcardRoundedIcon from '@mui/icons-material/CardGiftcardRounded';
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded';
 
 interface EndScreenPhoneProps {
   isVisible: boolean;
@@ -41,6 +48,7 @@ export const EndScreenPhone: React.FC<EndScreenPhoneProps> = ({
   return (
     <AnimatePresence>
       <motion.div
+        key="end-screen-overlay"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
@@ -63,42 +71,72 @@ export const EndScreenPhone: React.FC<EndScreenPhoneProps> = ({
             transition={{ duration: 0.5, type: 'spring' }}
           >
             <Box sx={{ textAlign: 'center' }}>
+              {/* ไอคอนเฉลิมฉลองแทน 🎉 */}
               <motion.div
-                animate={{ y: [-20, 20, -20] }}
-                transition={{ duration: 2, repeat: Infinity }}
+                animate={{ y: [-10, 10, -10] }}
+                transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
               >
-                <Typography sx={{ fontSize: '5rem', mb: 2 }}>🎉</Typography>
+                <Box
+                  sx={{
+                    width: 80,
+                    height: 80,
+                    borderRadius: '50%',
+                    mx: 'auto',
+                    mb: 2,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    background: `radial-gradient(circle, ${accentColor}55, transparent 65%)`,
+                    boxShadow: `0 0 30px ${accentColor}66`,
+                  }}
+                >
+                  <CelebrationRoundedIcon
+                    sx={{
+                      fontSize: 42,
+                      color: '#fff',
+                    }}
+                  />
+                </Box>
               </motion.div>
 
+              {/* หัวข้อใหญ่แทน "เพลงจบแล้ว! 💚" */}
               <Typography
                 sx={{
-                  fontSize: { xs: '2rem', md: '3rem' },
+                  fontSize: { xs: '1.9rem', md: '2.6rem' },
                   fontWeight: 900,
                   background: `linear-gradient(135deg, ${themeColor}, ${accentColor})`,
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                   backgroundClip: 'text',
-                  mb: 2,
+                  mb: 1.5,
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 1,
                 }}
               >
-                เพลงจบแล้ว! 💚
+                เพลงจบแล้วแล้วนะ
+                <FavoriteRoundedIcon
+                  sx={{ fontSize: { xs: 22, md: 26 }, color: accentColor }}
+                />
               </Typography>
 
+              {/* ข้อความกลางแทนที่มี 🫶 */}
               <Typography
                 sx={{
-                  fontSize: { xs: '1rem', md: '1.2rem' },
-                  opacity: 0.85,
+                  fontSize: { xs: '0.95rem', md: '1.1rem' },
+                  opacity: 0.88,
                   mb: 4,
                   lineHeight: 1.8,
                 }}
               >
-                ขอบคุณที่ติดตามเส้นเรื่องของเรา
+                ขอบคุณที่ฟังเรื่องราวทั้งหมดจนจบ
                 <br />
-                ทุกโมเมนต์ใจ ทุกหนึ่งวินาทีกับเธอ
+                ทุกโมเมนต์ ทุกจังหวะของหัวใจ
                 <br />
-                มันมีค่าต่อฉันมากกว่ารู้ 🫶
+                มีความหมายมากสำหรับฉันจริง ๆ
               </Typography>
 
+              {/* รูปหรือวิดีโอท้าย */}
               {(videoUrl || imageUrl) && (
                 <Box
                   sx={{
@@ -116,6 +154,7 @@ export const EndScreenPhone: React.FC<EndScreenPhoneProps> = ({
                       autoPlay
                       muted
                       loop
+                      playsInline
                       sx={{
                         width: '100%',
                         height: 'auto',
@@ -124,7 +163,13 @@ export const EndScreenPhone: React.FC<EndScreenPhoneProps> = ({
                       }}
                     />
                   ) : (
-                    <Box sx={{ position: 'relative', width: '100%', aspectRatio: '4/3' }}>
+                    <Box
+                      sx={{
+                        position: 'relative',
+                        width: '100%',
+                        aspectRatio: '4/3',
+                      }}
+                    >
                       <Image
                         src={imageUrl!}
                         alt="End screen"
@@ -136,61 +181,96 @@ export const EndScreenPhone: React.FC<EndScreenPhoneProps> = ({
                 </Box>
               )}
 
-              <Box sx={{ mb: 4, ...appleGlassStyle(accentColor), p: { xs: 2, md: 3 }, borderRadius: 3 }}>
-                <Typography sx={{ fontSize: { xs: '0.9rem', md: '1rem' }, fontStyle: 'italic', lineHeight: 1.8, opacity: 0.9 }}>
-                  "ขอบคุณที่เกิดมาเป็นจอม ขอบคุณที่เข้ามาในชีวิตฉัน ขอบคุณที่ทำให้วันัๆ เป็นพิเศษ"
+              {/* กล่องข้อความ quote ใช้ glass style */}
+              <Box
+                sx={{
+                  mb: 4,
+                  p: { xs: 2, md: 3 },
+                  borderRadius: 3,
+                  ...appleGlassStyle(accentColor),
+                }}
+              >
+                <Typography
+                  sx={{
+                    fontSize: { xs: '0.9rem', md: '1rem' },
+                    fontStyle: 'italic',
+                    lineHeight: 1.8,
+                    opacity: 0.9,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 0.75,
+                    alignItems: 'center',
+                  }}
+                >
+                  <FavoriteBorderRoundedIcon
+                    sx={{ fontSize: 20, color: accentColor, mb: 0.5 }}
+                  />
+                  <span>
+                    &quot;ขอบคุณที่เกิดมาเป็นเธอ
+                    ขอบคุณที่เดินเข้ามาในชีวิตฉัน
+                    <br />
+                    และทำให้วันธรรมดากลายเป็นวันพิเศษเสมอ&quot;
+                  </span>
                 </Typography>
               </Box>
 
-              <Box sx={{ display: 'flex', gap: 2, flexDirection: { xs: 'column', md: 'row' } }}>
-                <Box
-                  component="button"
+              {/* ปุ่มแอ็กชันสองปุ่ม แทน 🎁 และ ปิด */}
+              <Stack
+                spacing={2}
+                direction={{ xs: 'column', md: 'row' }}
+                sx={{ justifyContent: 'center' }}
+              >
+                <Button
                   onClick={onGoToGift}
+                  variant="contained"
+                  startIcon={<CardGiftcardRoundedIcon />}
                   sx={{
                     flex: 1,
                     px: 4,
-                    py: 2,
-                    fontSize: { xs: '1rem', md: '1.1rem' },
+                    py: 1.6,
+                    fontSize: { xs: '0.95rem', md: '1.05rem' },
                     fontWeight: 700,
-                    borderRadius: 50,
-                    border: 'none',
+                    borderRadius: 999,
+                    textTransform: 'none',
                     background: `linear-gradient(135deg, ${themeColor}, ${accentColor})`,
-                    color: '#fff',
                     boxShadow: `0 0 30px ${accentColor}66`,
-                    cursor: 'pointer',
-                    transition: 'all 0.3s ease',
-                    '&:hover': { 
-                      boxShadow: `0 0 50px ${accentColor}99`, 
-                      transform: 'translateY(-2px)' 
+                    '&:hover': {
+                      boxShadow: `0 0 45px ${accentColor}aa`,
+                      transform: 'translateY(-2px)',
                     },
+                    transition: 'all 0.25s ease',
                   }}
                 >
-                  🎁 ดูของขวัญ
-                </Box>
-                <Box
-                  component="button"
+                  ไปดูของขวัญต่อ
+                </Button>
+
+                <Button
                   onClick={onClose}
+                  variant="outlined"
+                  startIcon={<CloseRoundedIcon />}
                   sx={{
                     flex: 1,
                     px: 4,
-                    py: 2,
-                    fontSize: { xs: '1rem', md: '1.1rem' },
+                    py: 1.6,
+                    fontSize: { xs: '0.95rem', md: '1.05rem' },
                     fontWeight: 700,
-                    borderRadius: 50,
-                    border: `2px solid ${accentColor}`,
-                    background: 'transparent',
+                    borderRadius: 999,
+                    textTransform: 'none',
+                    borderWidth: 2,
+                    borderColor: accentColor,
                     color: accentColor,
-                    cursor: 'pointer',
-                    transition: 'all 0.3s ease',
-                    '&:hover': { 
-                      background: `${accentColor}22`, 
-                      boxShadow: `0 0 30px ${accentColor}44` 
+                    backgroundColor: 'transparent',
+                    '&:hover': {
+                      backgroundColor: `${accentColor}22`,
+                      borderColor: accentColor,
+                      boxShadow: `0 0 30px ${accentColor}55`,
                     },
+                    transition: 'all 0.25s ease',
                   }}
                 >
-                  ปิด
-                </Box>
-              </Box>
+                  ปิดหน้านี้
+                </Button>
+              </Stack>
             </Box>
           </motion.div>
         </Container>
