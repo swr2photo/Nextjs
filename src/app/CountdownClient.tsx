@@ -17,25 +17,44 @@ function getTimeParts(totalSeconds: number) {
   return { days, hours, minutes, seconds };
 }
 
+// ✅ ส่งกลับเฉพาะเวลาที่ > 0
+function getDisplayTimeParts(totalSeconds: number) {
+  const { days, hours, minutes, seconds } = getTimeParts(totalSeconds);
+  
+  return [
+    { label: 'วัน', value: days },
+    { label: 'ชั่วโมง', value: hours },
+    { label: 'นาที', value: minutes },
+    { label: 'วินาที', value: seconds },
+  ].filter(part => part.value > 0);
+}
+
 function TimeBox({ label, value }: { label: string; value: number }) {
   return (
-    <AnimatePresence mode="wait">
-      <motion.div
-        key={`${label}-${value}`}
-        initial={{ opacity: 0, y: 10, scale: 0.9 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        exit={{ opacity: 0, y: -10, scale: 0.9 }}
-        transition={{ duration: 0.25 }}
+    <motion.div
+      key={`${label}-${value}`}
+      initial={{ y: 20, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      exit={{ y: -20, opacity: 0 }}
+      transition={{ duration: 0.4 }}
+      layout
+    >
+      <Box
+        sx={{
+          minWidth: 76,
+          px: 2,
+          py: 1.5,
+          borderRadius: 3,
+          background: 'rgba(0,0,0,0.5)',
+          border: '1px solid rgba(255,255,255,0.16)',
+        }}
       >
-        <Box
-          sx={{
-            minWidth: 76,
-            px: 2,
-            py: 1.5,
-            borderRadius: 3,
-            background: 'rgba(0,0,0,0.5)',
-            border: '1px solid rgba(255,255,255,0.16)',
-          }}
+        <motion.div
+          key={`value-${value}`}
+          initial={{ y: 15, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: -15, opacity: 0 }}
+          transition={{ duration: 0.3, ease: 'easeOut' }}
         >
           <Typography
             sx={{
@@ -47,17 +66,17 @@ function TimeBox({ label, value }: { label: string; value: number }) {
           >
             {value.toString().padStart(2, '0')}
           </Typography>
-          <Typography
-            sx={{
-              fontSize: '0.85rem',
-              color: 'rgba(255,255,255,0.6)',
-            }}
-          >
-            {label}
-          </Typography>
-        </Box>
-      </motion.div>
-    </AnimatePresence>
+        </motion.div>
+        <Typography
+          sx={{
+            fontSize: '0.85rem',
+            color: 'rgba(255,255,255,0.6)',
+          }}
+        >
+          {label}
+        </Typography>
+      </Box>
+    </motion.div>
   );
 }
 
@@ -112,14 +131,14 @@ export default function CountdownClient({
           fontFamily: 'var(--font-noto-sans-thai), system-ui, sans-serif',
         }}
       >
-        กำลังเตรียมเซอร์ไพรส์ให้เธอแป๊บนะ 💚
+        กำลังเตรียมเซอร์ไพรส์ให้แป๊บนะ 💚
       </Box>
     );
   }
 
   const remainingSeconds = Math.max(0, Math.ceil(remainingMs / 1000));
   const isLastFive = remainingSeconds <= 5;
-  const { days, hours, minutes, seconds } = getTimeParts(remainingSeconds);
+  const displayParts = getDisplayTimeParts(remainingSeconds);
 
   return (
     <Box
@@ -244,152 +263,137 @@ export default function CountdownClient({
               mb: 2,
             }}
           >
-            นับถอยหลังไปวันเกิดของเธออยู่เลยนะ 💚
+            นับถอยหลังวันเกิดวัวที่ไหนไม่รู้ 
           </Typography>
 
           {!isLastFive && (
-            <AnimatePresence mode="wait">
-              <motion.div
-                key="normal-mode"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.4 }}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.4 }}
+            >
+              <Typography
+                sx={{
+                  fontSize: { xs: '0.95rem', md: '1rem' },
+                  color: 'rgba(255,255,255,0.82)',
+                  mb: 3,
+                }}
               >
-                <Typography
-                  sx={{
-                    fontSize: { xs: '0.95rem', md: '1rem' },
-                    color: 'rgba(255,255,255,0.82)',
-                    mb: 3,
-                  }}
-                >
-                  ทุก ๆ วินาทีที่ไหลไป คืออีกหนึ่งก้าวที่เข้าใกล้วันสำคัญของเธอ
-                  <br />
-                  ขอให้วันที่กำลังจะมาถึง เต็มไปด้วยรอยยิ้มและความรู้สึกดี ๆ นะ 😊
-                </Typography>
+                ทุก ๆ วินาทีที่ไหลไป คืออีกหนึ่งก้าวที่เข้าใกล้วันสำคัญของใครไม่รู้ อิอิ
+                <br />
+                ขอให้วันที่กำลังจะมาถึง เต็มไปด้วยรอยยิ้มและความรู้สึกดี ๆ นะ 
+              </Typography>
 
-                <Box
-                  sx={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    gap: { xs: 1.5, md: 2.5 },
-                    flexWrap: 'wrap',
-                    mb: 3,
-                  }}
-                >
-                  <TimeBox label="วัน" value={days} />
-                  <TimeBox label="ชั่วโมง" value={hours} />
-                  <TimeBox label="นาที" value={minutes} />
-                  <TimeBox label="วินาที" value={seconds} />
-                </Box>
+              {/* ✅ TimeBox - Responsive wrap หากหลายค่า */}
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  gap: { xs: 1.5, md: 2.5 },
+                  flexWrap: 'wrap',
+                  mb: 3,
+                }}
+              >
+                <AnimatePresence mode="popLayout">
+                  {displayParts.map(part => (
+                    <TimeBox key={part.label} label={part.label} value={part.value} />
+                  ))}
+                </AnimatePresence>
+              </Box>
 
-                <Typography
-                  sx={{
-                    fontSize: '0.9rem',
-                    color: 'rgba(255,255,255,0.65)',
-                  }}
-                >
-                  พอเวลาเดินมาถึง <strong>5 วินาทีสุดท้าย</strong>{' '}
-                  เราจะถามเธออีกครั้ง… ว่าพร้อมจะรับของขวัญจากเราหรือยัง 🌿
-                </Typography>
-              </motion.div>
-            </AnimatePresence>
+            </motion.div>
           )}
 
           {isLastFive && (
-            <AnimatePresence mode="wait">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: -10 }}
+              transition={{ duration: 0.4 }}
+            >
+              <Typography
+                sx={{
+                  fontSize: { xs: '0.95rem', md: '1rem' },
+                  color: 'rgba(255,255,255,0.8)',
+                  mb: 2,
+                }}
+              >
+                อีกไม่กี่วินาที… ทุกอย่างที่เตรียมไว้ให้เธอจะเริ่มต้นขึ้นแล้ว 💫
+              </Typography>
+
               <motion.div
-                key="last-five"
-                initial={{ opacity: 0, scale: 0.9, y: 10 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.9, y: -10 }}
-                transition={{ duration: 0.4 }}
+                key={remainingSeconds}
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: -20, opacity: 0 }}
+                transition={{ duration: 0.3, ease: 'easeOut' }}
               >
                 <Typography
                   sx={{
-                    fontSize: { xs: '0.95rem', md: '1rem' },
-                    color: 'rgba(255,255,255,0.8)',
-                    mb: 2,
+                    fontSize: { xs: '4rem', md: '5rem' },
+                    fontWeight: 900,
+                    mb: 1,
+                    lineHeight: 1,
+                    background:
+                      'linear-gradient(135deg, #22c55e 0%, #10b981 50%, #ffffff 100%)',
+                    backgroundClip: 'text',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    textShadow: '0 0 22px rgba(0,0,0,0.6)',
                   }}
                 >
-                  อีกไม่กี่วินาที… ทุกอย่างที่เตรียมไว้ให้เธอจะเริ่มต้นขึ้นแล้ว 💫
-                </Typography>
-
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={remainingSeconds}
-                    initial={{ scale: 0.4, opacity: 0, y: 30 }}
-                    animate={{ scale: 1, opacity: 1, y: 0 }}
-                    exit={{ scale: 0.4, opacity: 0, y: -30 }}
-                    transition={{ duration: 0.3, ease: 'easeOut' }}
-                  >
-                    <Typography
-                      sx={{
-                        fontSize: { xs: '4rem', md: '5rem' },
-                        fontWeight: 900,
-                        mb: 1,
-                        lineHeight: 1,
-                        background:
-                          'linear-gradient(135deg, #22c55e 0%, #10b981 50%, #ffffff 100%)',
-                        backgroundClip: 'text',
-                        WebkitBackgroundClip: 'text',
-                        WebkitTextFillColor: 'transparent',
-                        textShadow: '0 0 22px rgba(0,0,0,0.6)',
-                      }}
-                    >
-                      {remainingSeconds}
-                    </Typography>
-                  </motion.div>
-                </AnimatePresence>
-
-                <Typography
-                  sx={{
-                    fontSize: { xs: '1.1rem', md: '1.25rem' },
-                    color: 'rgba(255,255,255,0.9)',
-                    mb: 3,
-                    fontWeight: 600,
-                  }}
-                >
-                  คุณพร้อมมั้ยล่ะ ที่จะให้เราพาเข้าไปในโลกของความทรงจำคนน่ารักคนนี้ 💚
-                </Typography>
-
-                <motion.div
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  whileTap={{ scale: 0.97, y: 0 }}
-                >
-                  <Button
-                    onClick={() => setShowApp(true)}
-                    variant="contained"
-                    sx={{
-                      px: 5,
-                      py: 1.3,
-                      borderRadius: 999,
-                      fontWeight: 700,
-                      fontSize: '1rem',
-                      textTransform: 'none',
-                      background:
-                        'linear-gradient(135deg, #22c55e, #10b981)',
-                      boxShadow: '0 12px 30px rgba(0,0,0,0.6)',
-                      '&:hover': {
-                        boxShadow: '0 16px 40px rgba(0,0,0,0.75)',
-                      },
-                    }}
-                  >
-                    เริ่มเลย 💫
-                  </Button>
-                </motion.div>
-
-                <Typography
-                  sx={{
-                    mt: 1.5,
-                    fontSize: '0.8rem',
-                    color: 'rgba(255,255,255,0.55)',
-                  }}
-                >
-                  (ถ้าเธอไม่กด เดี๋ยวเวลาเป็นศูนย์ เราจะพาเธอเข้าไปเองนะ)
+                  {remainingSeconds}
                 </Typography>
               </motion.div>
-            </AnimatePresence>
+
+              <Typography
+                sx={{
+                  fontSize: { xs: '1.1rem', md: '1.25rem' },
+                  color: 'rgba(255,255,255,0.9)',
+                  mb: 3,
+                  fontWeight: 600,
+                }}
+              >
+                พร้อมมั้ยๆ ที่จะให้พาเข้าไปในอะไรสักอย่าง 💚
+              </Typography>
+
+              <motion.div
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.97, y: 0 }}
+              >
+                <Button
+                  onClick={() => setShowApp(true)}
+                  variant="contained"
+                  sx={{
+                    px: 5,
+                    py: 1.3,
+                    borderRadius: 999,
+                    fontWeight: 700,
+                    fontSize: '1rem',
+                    textTransform: 'none',
+                    background:
+                      'linear-gradient(135deg, #22c55e, #10b981)',
+                    boxShadow: '0 12px 30px rgba(0,0,0,0.6)',
+                    '&:hover': {
+                      boxShadow: '0 16px 40px rgba(0,0,0,0.75)',
+                    },
+                  }}
+                >
+                  เริ่มเลย 💫
+                </Button>
+              </motion.div>
+
+              <Typography
+                sx={{
+                  mt: 1.5,
+                  fontSize: '0.8rem',
+                  color: 'rgba(255,255,255,0.55)',
+                }}
+              >
+                (ถ้าจอมไม่กด เดี๋ยวเวลาเป็นศูนย์ มันบังคับให้กดเองแหละ 😆)
+              </Typography>
+            </motion.div>
           )}
         </Box>
       </motion.div>

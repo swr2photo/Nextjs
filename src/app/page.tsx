@@ -5,8 +5,7 @@ import { Box } from '@mui/material';
 
 // ✅ ตั้งเวลาวันเกิด (แก้ตรงนี้ได้)
 // ตัวอย่าง: 5 ธ.ค. 2025 เวลา 00:00 น.
-const BIRTHDAY_TARGET = new Date('2025-12-02T00:00:00');
-
+const BIRTHDAY_TARGET = new Date('2025-12-05T00:00:00+07:00');
 export default function Page() {
   return (
     <Suspense
