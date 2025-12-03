@@ -22,7 +22,7 @@ const QUIZ_QUESTIONS = [
     id: 1,
     question: 'รู้มั้ย เราชอบสีอะไร?',
     options: ['สีแดง', 'สีดำ', 'สีเหลือง'],
-    correctOption: 3,
+    correctOption: 1,
   },
   {
     id: 2,
