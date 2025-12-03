@@ -1,26 +1,262 @@
-@import "tailwindcss";
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
+/* DaisyUI */
+/* Remove @plugin and use import instead */
+
+/* ของเดิมคุณทั้งหมดด้านล่างนี้ */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ✅ CSS Custom Properties สำหรับธีม */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Emerald (Default) */
+  --color-primary: #10b981;
+  --color-secondary: #6ee7b7;
+  --color-dark: #0f766e;
+  --color-paper: #134e4a;
+  --color-accent: #059669;
+
+  /* RGB versions for rgba */
+  --color-primary-rgb: 16, 185, 129;
+  --color-secondary-rgb: 110, 231, 183;
+  --color-dark-rgb: 15, 118, 110;
+  --color-accent-rgb: 5, 150, 105;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: linear-gradient(
+    135deg,
+    var(--color-dark) 0%,
+    var(--color-paper) 50%,
+    #0d3d3a 100%
+  );
+  color: rgba(255, 255, 255, 0.9);
+  font-family: 'Noto Sans Thai', sans-serif;
+  overflow-x: hidden;
+  transition: background 0.6s ease;
+  animation: pageEnter 0.5s ease-out;
 }
+
+/* ✅ Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(var(--color-secondary-rgb), 0.3);
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(var(--color-secondary-rgb), 0.6);
+  box-shadow: 0 0 15px rgba(var(--color-primary-rgb), 0.3);
+}
+
+/* Firefox Scrollbar */
+* {
+  scrollbar-color: rgba(var(--color-secondary-rgb), 0.3)
+    rgba(255, 255, 255, 0.05);
+  scrollbar-width: thin;
+}
+
+/* ✅ Smooth animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes glow {
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(var(--color-primary-rgb), 0.5);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(var(--color-accent-rgb), 0.8);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes pageEnter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.1);
+  }
+}
+
+/* ✅ Selection styles */
+::selection {
+  background: rgba(var(--color-primary-rgb), 0.3);
+  color: #fff;
+}
+
+::-moz-selection {
+  background: rgba(var(--color-primary-rgb), 0.3);
+  color: #fff;
+}
+
+/* ✅ Focus styles */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* ✅ Link styles */
+a {
+  color: var(--color-secondary);
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+a:hover {
+  color: var(--color-accent);
+  text-shadow: 0 0 15px rgba(var(--color-primary-rgb), 0.5);
+}
+
+/* ✅ Button reset */
+button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* ✅ Input styles */
+input,
+textarea,
+select {
+  background: rgba(var(--color-primary-rgb), 0.1);
+  border: 1px solid rgba(var(--color-primary-rgb), 0.3);
+  color: inherit;
+  border-radius: 8px;
+  padding: 10px 12px;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+input:hover,
+textarea:hover,
+select:hover {
+  border-color: rgba(var(--color-primary-rgb), 0.6);
+  background: rgba(var(--color-primary-rgb), 0.15);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  background: rgba(var(--color-primary-rgb), 0.2);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 15px rgba(var(--color-primary-rgb), 0.3);
+}
+
+/* ✅ Placeholder */
+::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* ✅ Responsive text selection */
+@media (max-width: 768px) {
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+}
+
+/* ================================
+   📱 EndScreen Phone Customization
+   ================================ */
+
+/* ปรับกรอบของ EndScreenPhone ให้คล้ายจอมือถือจริง */
+.endscreen-phone.mockup-phone {
+  border-radius: 2.4rem;
+  border-width: 4px;
+  padding: 0.45rem;
+  background: rgba(15, 23, 42, 0.95);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9);
+}
+
+/* ตัดเอฟเฟกต์ตกแต่งเดิมของ daisyUI ที่ทำให้กรอบดูหนา/เหลี่ยม */
+.endscreen-phone.mockup-phone::before {
+  display: none;
+}
+
+/* โค้งขอบจอด้านในให้กลมเนียน */
+.endscreen-phone .mockup-phone-display {
+  border-radius: 2rem;
+  overflow: hidden;
+}
+
+/* เอา scroll ด้านในจอออกไปเลย */
+.phone-scroll-content {
+  max-height: none;
+  overflow: visible;
+}
+
+/* ================================
+   🎂 Cake-specific Styles
+   ================================ */
+
+/* ยังต้องการเพิ่ม styles อื่นๆหรือไม่? */
