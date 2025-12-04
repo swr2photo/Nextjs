@@ -9,6 +9,9 @@ import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import GradeIcon from '@mui/icons-material/Grade';
+import SentimentSatisfiedAltRoundedIcon from '@mui/icons-material/SentimentSatisfiedAltRounded';
+import VolunteerActivismRoundedIcon from '@mui/icons-material/VolunteerActivismRounded';
+import SpaRoundedIcon from '@mui/icons-material/SpaRounded';
 
 export default function HappyBirthday() {
   const containerVariants = {
@@ -437,9 +440,19 @@ export default function HappyBirthday() {
                   WebkitTextFillColor: 'transparent',
                   mb: 1,
                   position: 'relative',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 1,
                 }}
               >
-                สุขสันต์วันเกิดน้าา 💚
+                <span>Happy Birthday น้าา</span>
+                <FavoriteTwoToneIcon
+                  sx={{
+                    fontSize: { xs: '2.2rem', md: '2.8rem' },
+                    color: 'var(--color-primary)',
+                  }}
+                />
                 <Box
                   sx={{
                     position: 'absolute',
@@ -467,9 +480,19 @@ export default function HappyBirthday() {
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                   mb: 1,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 1,
                 }}
               >
-                เจ้าจอมคนเก่ง 💫
+                <span>เจ้าจอม (คนขี้เซา)</span>
+                <AutoAwesomeIcon
+                  sx={{
+                    fontSize: { xs: '1.6rem', md: '2rem' },
+                    color: 'var(--color-secondary)',
+                  }}
+                />
               </Box>
             </motion.div>
 
@@ -481,9 +504,20 @@ export default function HappyBirthday() {
                   color: 'rgba(255, 255, 255, 0.8)',
                   mb: 3,
                   fontStyle: 'italic',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 0.5,
+                  flexWrap: 'wrap',
+                  justifyContent: 'center',
                 }}
               >
-                05 ธันวาคม 2568 · วันเกิดของคนพิเศษที่สุดคนหนึ่งในโลกใบนี้ (20ปีแล้วแก่ขึ้นอีกปีแล้วนะ)
+                <span>5 ธันวาคม 2568 · โตขึ้นอีกปีแล้วนะเรา (เลิกนอนดึกได้แล้ว!)</span>
+                <SentimentSatisfiedAltRoundedIcon
+                  sx={{
+                    fontSize: '1.4rem',
+                    color: 'var(--color-secondary)',
+                  }}
+                />
               </Box>
             </motion.div>
 
@@ -568,10 +602,21 @@ export default function HappyBirthday() {
                     fontWeight: 500,
                     position: 'relative',
                     zIndex: 1,
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    justifyContent: 'center',
+                    gap: 0.4,
                   }}
                 >
-                  ขอให้วันนี้เป็นวันที่หัวใจของแกเบาสบายที่สุดเลยนะ 💭
+                  <span>ขอให้วันนี้เป็นวันที่ใจฟูที่สุด! งานการไม่ต้องไปเครียดมันมาก (พักบ้างนะ)</span>
+                  <AutoAwesomeIcon
+                    sx={{
+                      fontSize: '1.3rem',
+                      color: 'var(--color-secondary)',
+                    }}
+                  />
                 </Box>
+
                 <Box
                   sx={{
                     fontSize: { xs: '0.98rem', md: '1.1rem' },
@@ -581,11 +626,24 @@ export default function HappyBirthday() {
                     fontWeight: 400,
                     position: 'relative',
                     zIndex: 1,
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    justifyContent: 'center',
+                    gap: 0.4,
                   }}
                 >
-                  ไม่ว่าแกจะผ่านเรื่องเหนื่อย ๆ อะไรมาบ้าง
-                  วันนี้อยากให้รู้ไว้ว่า ยังมีคนคนนึงแอบใจกำลังอยู่ข้าง ๆ เสมอ 💚
+                  <span>
+                    ไม่ว่าจะเจอเรื่องปวดหัวแค่ไหน หันมาก็เจอเราเสมอแหละ...
+                    จะคอยป่วน เอ้ย! คอยซัพพอร์ตอยู่ตรงนี้ยาว ๆ
+                  </span>
+                  <FavoriteTwoToneIcon
+                    sx={{
+                      fontSize: '1.3rem',
+                      color: 'var(--color-primary)',
+                    }}
+                  />
                 </Box>
+
                 <Box
                   sx={{
                     fontSize: { xs: '0.98rem', md: '1.1rem' },
@@ -594,10 +652,20 @@ export default function HappyBirthday() {
                     fontWeight: 400,
                     position: 'relative',
                     zIndex: 1,
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    justifyContent: 'center',
+                    gap: 0.4,
                   }}
                 >
-                  ขอให้ปีนี้เต็มไปด้วยเสียงหัวเราะ เรื่องดี ๆ แบบงง ๆ
-                  และโมเมนต์ที่ทำให้แกยิ้มจนลืมเหนื่อยไปเลยนะ คนเก่งของเค้า 🌿
+                  <span>ขอให้ปีนี้มีแต่เรื่องให้ยิ้ม (และของกินอร่อย ๆ) เข้ามาเยอะ ๆ นะ</span>
+                  <span>รักนะค้าบบ ไอ้ต้าว!</span>
+                  <SpaRoundedIcon
+                    sx={{
+                      fontSize: '1.4rem',
+                      color: 'var(--color-secondary)',
+                    }}
+                  />
                 </Box>
               </Box>
             </motion.div>
@@ -614,9 +682,20 @@ export default function HappyBirthday() {
                 color: 'rgba(255, 255, 255, 0.78)',
                 fontStyle: 'italic',
                 letterSpacing: '0.5px',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 0.6,
+                flexWrap: 'wrap',
+                justifyContent: 'center',
               }}
             >
-              "ขอบคุณที่เกิดมาเป็นจอม... มีความสุขมาก ๆ นะจร๊ะน้อนจอม" 🫶
+              <span>"ขอบคุณที่เกิดมาให้เราบ่นนะ... มีความสุขมาก ๆ นะจอม"</span>
+              <VolunteerActivismRoundedIcon
+                sx={{
+                  fontSize: '1.4rem',
+                  color: 'var(--color-secondary)',
+                }}
+              />
             </Box>
           </motion.div>
         </motion.div>
@@ -660,7 +739,7 @@ export default function HappyBirthday() {
               whiteSpace: 'nowrap',
             }}
           >
-            ยางงมีข้างล่งต่อน้าาา 🫶
+            เลื่อนลงไปดูดิ มีไรให้ดูอีก
           </Box>
 
           {/* เส้นแบ่งเล็ก ๆ */}

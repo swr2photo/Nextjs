@@ -92,7 +92,7 @@ export default function GiftChallenge3({
             color: 'rgba(226,232,240,0.95)',
           }}
         >
-          ใบ้: วันเกิดของผู้ชายคนนี้ (DDMMYYYY)
+          คำใบ้: วันเกิดของวัวมั้งเป็นปีค.ศ. (DDMMYYYY)
         </Box>
       </Stack>
 

@@ -3,7 +3,7 @@ import CountdownClient from './CountdownClient';
 import { Box } from '@mui/material';
 
 // ตั้งเวลานับถอยหลัง (ตัวอย่าง: 5 ธ.ค. 2025 ตี 3 ตามเวลาไทย)
-const BIRTHDAY_TARGET = new Date('2025-12-04T05:00:00+07:00');
+const BIRTHDAY_TARGET = new Date('2025-12-05T00:00:00+07:00');
 
 export default function Page() {
   return (

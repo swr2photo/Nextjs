@@ -164,7 +164,7 @@ export default function GiftBox3D({
       setShowParticles(true);
       setTimeout(() => setShowParticles(false), 2200);
     } else {
-      setCodeError('รหัสไม่ถูกต้อง ลองใหม่อีกครั้ง');
+      setCodeError('อาจจะยังน้าา ลองใหม่อีกทีสิ อิอิ');
       setTimeout(() => setCodeError(''), 3000);
     }
   };
