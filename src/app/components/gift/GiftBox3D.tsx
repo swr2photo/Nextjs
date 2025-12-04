@@ -573,6 +573,7 @@ export default function GiftBox3D({
               primaryColor={primary}
               accentColor={accent}
               isMobile={isMobile}
+              videoUrl="/videos/gift-intro.mp4"
             />
           )}
         </AnimatePresence>
