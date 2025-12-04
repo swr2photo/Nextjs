@@ -1,8 +1,10 @@
 'use client';
 
-import { Box, Button } from '@mui/material';
+import { Box, Button, Stack } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import QuizIcon from '@mui/icons-material/Quiz';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import { DESIGN_SYSTEM } from '../../theme/designSystem';
 
 interface GiftChallenge2Props {
@@ -32,6 +34,13 @@ export default function GiftChallenge2({
     onAnswer(idx);
   };
 
+  // ให้การสั่นทำงานตอนมี error
+  useEffect(() => {
+    if (error) {
+      setShake(true);
+    }
+  }, [error]);
+
   return (
     <Box
       sx={{
@@ -43,20 +52,32 @@ export default function GiftChallenge2({
         backdropFilter: 'blur(10px)',
       }}
     >
-      <Box
-        component="p"
-        sx={{
-          ...DESIGN_SYSTEM.typography.label,
-          color: accentColor,
-          mb: 0.8,
-        }}
+      {/* Title + Icon */}
+      <Stack
+        direction="row"
+        alignItems="center"
+        spacing={1}
+        sx={{ mb: 0.8 }}
       >
-        🎯 ชาเล้นที่ 2 · ตอบคำถาม{' '}
-        <span style={{ opacity: 0.7 }}>
-          ({currentIndex + 1}/{totalQuestions})
-        </span>
-      </Box>
+        <QuizIcon
+          sx={{ color: accentColor, fontSize: { xs: 20, sm: 22, md: 24 } }}
+        />
+        <Box
+          component="p"
+          sx={{
+            ...DESIGN_SYSTEM.typography.label,
+            color: accentColor,
+            mb: 0,
+          }}
+        >
+          ชาเล้นที่ 2 · ตอบคำถาม{' '}
+          <span style={{ opacity: 0.7 }}>
+            ({currentIndex + 1}/{totalQuestions})
+          </span>
+        </Box>
+      </Stack>
 
+      {/* Question (shake เมื่อผิด) */}
       <motion.div
         animate={shake ? { x: [-8, 8, -6, 6, 0] } : {}}
         transition={{ duration: 0.4 }}
@@ -74,6 +95,7 @@ export default function GiftChallenge2({
         </Box>
       </motion.div>
 
+      {/* Options */}
       <Box
         sx={{
           display: 'grid',
@@ -111,6 +133,7 @@ export default function GiftChallenge2({
         ))}
       </Box>
 
+      {/* Error message */}
       <AnimatePresence>
         {error && (
           <motion.div
@@ -118,17 +141,26 @@ export default function GiftChallenge2({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
           >
-            <Box
-              component="p"
-              sx={{
-                fontSize: { xs: '0.75rem', sm: '0.85rem' },
-                mt: 1.2,
-                color: '#fb7185',
-                fontWeight: 600,
-              }}
+            <Stack
+              direction="row"
+              spacing={0.8}
+              alignItems="center"
+              sx={{ mt: 1.2 }}
             >
-              {error}
-            </Box>
+              <ErrorOutlineIcon
+                sx={{ color: '#fb7185', fontSize: { xs: 16, sm: 18 } }}
+              />
+              <Box
+                component="p"
+                sx={{
+                  fontSize: { xs: '0.75rem', sm: '0.85rem' },
+                  color: '#fb7185',
+                  fontWeight: 600,
+                }}
+              >
+                {error}
+              </Box>
+            </Stack>
           </motion.div>
         )}
       </AnimatePresence>

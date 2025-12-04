@@ -2,6 +2,10 @@
 
 import { Box } from '@mui/material';
 import { motion } from 'framer-motion';
+import MailOutlineRoundedIcon from '@mui/icons-material/MailOutlineRounded';
+import CakeRoundedIcon from '@mui/icons-material/CakeRounded';
+import WhatshotRoundedIcon from '@mui/icons-material/WhatshotRounded';
+import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 import { DESIGN_SYSTEM } from '../../theme/designSystem';
 
 interface GiftMessageProps {
@@ -54,6 +58,7 @@ export default function GiftMessage({
           overflow: 'hidden',
         }}
       >
+        {/* shimmer light */}
         <Box
           sx={{
             position: 'absolute',
@@ -71,19 +76,26 @@ export default function GiftMessage({
           }}
         />
 
+        {/* Header: icon + text */}
         <Box
-          component="p"
           sx={{
             ...DESIGN_SYSTEM.typography.label,
             color: accentColor,
             mb: 1.2,
             position: 'relative',
             zIndex: 1,
+            display: 'flex',
+            alignItems: 'center',
+            gap: 0.75,
           }}
         >
-          ✉️ จากใจของฉัน
+          <MailOutlineRoundedIcon
+            sx={{ fontSize: { xs: 18, sm: 20 } }}
+          />
+          ถึง... จอม (คนขี้เซา)
         </Box>
 
+        {/* Main text */}
         <Box
           component="p"
           sx={{
@@ -96,10 +108,39 @@ export default function GiftMessage({
             zIndex: 1,
           }}
         >
-          ขอบคุณที่เกิดมาในวันนี้ ขอบคุณที่ยอมให้เราได้อยู่ในชีวิตของนาย
-          ต่อให้ตอนนี้เรายังเป็นแค่ "เพื่อนผู้ชาย" คนหนึ่ง แต่ในใจลึก ๆ…
+          <Box
+            sx={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 0.5,
+              mb: 0.5,
+            }}
+          >
+            <CakeRoundedIcon
+              sx={{ fontSize: { xs: 18, sm: 20 }, color: accentColor }}
+            />
+            <span>สุขสันต์วันเกิดนะ</span>
+          </Box>
+          <br />
+          ดีใจจริง ๆ ที่ได้รู้จักจอม ขอบคุณที่เป็นความสบายใจให้เรา{' '}
+          <Box
+            component="span"
+            sx={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 0.4,
+            }}
+          >
+            <span>(ในวันที่งานเดือด</span>
+            <WhatshotRoundedIcon
+              sx={{ fontSize: { xs: 16, sm: 18 }, color: '#fb7185' }}
+            />
+            <span>)</span>
+          </Box>{' '}
+          และขอบคุณที่ทนความขี้บ่นของเราได้เสมอ...
         </Box>
 
+        {/* Highlight quote box */}
         <Box
           sx={{
             py: { xs: 1, sm: 1.3, md: 1.8 },
@@ -112,23 +153,39 @@ export default function GiftMessage({
           }}
         >
           <Box
-            component="p"
             sx={{
-              fontSize: {
-                xs: '0.92rem',
-                sm: '1.05rem',
-                md: '1.18rem',
-              },
-              fontWeight: 900,
-              background: `linear-gradient(135deg, ${accentColor}, ${primaryColor})`,
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-              letterSpacing: '-0.01em',
-              m: 0,
+              display: 'flex',
+              alignItems: 'flex-start',
+              gap: 1,
             }}
           >
-            "ถ้าวันแรกของเธอกับฉัน เริ่มวันนี้เลยดีไหม 💚"
+            <FavoriteRoundedIcon
+              sx={{
+                mt: 0.2,
+                fontSize: { xs: 18, sm: 20 },
+                color: accentColor,
+                filter: `drop-shadow(0 0 8px ${accentColor}aa)`,
+              }}
+            />
+            <Box
+              component="p"
+              sx={{
+                fontSize: {
+                  xs: '0.92rem',
+                  sm: '1.05rem',
+                  md: '1.18rem',
+                },
+                fontWeight: 900,
+                background: `linear-gradient(135deg, ${accentColor}, ${primaryColor})`,
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+                letterSpacing: '-0.01em',
+                m: 0,
+              }}
+            >
+              "ปีนี้ไม่มีของขวัญแพง ๆ ให้... มีแต่ &quot;ตัวเรา&quot; ที่จะคอยป่วนแชทจอมไปทุกปี... ห้ามเบื่อกันก่อนนะ!"
+            </Box>
           </Box>
         </Box>
       </Box>

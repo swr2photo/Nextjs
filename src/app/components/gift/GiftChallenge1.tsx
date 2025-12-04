@@ -1,8 +1,9 @@
 'use client';
 
-import { Box } from '@mui/material';
+import { Box, Stack } from '@mui/material';
 import { motion } from 'framer-motion';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import SportsEsportsRoundedIcon from '@mui/icons-material/SportsEsportsRounded';
 import { DESIGN_SYSTEM } from '../../theme/designSystem';
 
 interface GiftChallenge1Props {
@@ -28,16 +29,27 @@ export default function GiftChallenge1({
         minHeight: 160,
       }}
     >
-      <Box
-        component="p"
-        sx={{
-          ...DESIGN_SYSTEM.typography.label,
-          color: accentColor,
-          mb: 1,
-        }}
+      {/* Title + Icon */}
+      <Stack
+        direction="row"
+        spacing={1}
+        alignItems="center"
+        sx={{ mb: 1 }}
       >
-        🎮 ชาเล้นที่ 1 · เติมหัวใจให้เต็ม
-      </Box>
+        <SportsEsportsRoundedIcon
+          sx={{ color: accentColor, fontSize: { xs: 20, sm: 22, md: 24 } }}
+        />
+        <Box
+          component="p"
+          sx={{
+            ...DESIGN_SYSTEM.typography.label,
+            color: accentColor,
+            mb: 0,
+          }}
+        >
+          ชาเล้นที่ 1 · เติมหัวใจให้เต็ม
+        </Box>
+      </Stack>
 
       <Box
         component="p"
@@ -47,14 +59,18 @@ export default function GiftChallenge1({
           color: 'rgba(226,232,240,0.96)',
         }}
       >
-        ลองแตะกล่องด้านบนเบา ๆ 3 ครั้ง 💚
+        ลองแตะกล่องด้านบนเบา ๆ ให้ครบ 3 ครั้ง 💚
       </Box>
 
       <Box sx={{ display: 'flex', gap: 1.2 }}>
         {Array.from({ length: 3 }).map((_, i) => (
           <motion.div
             key={i}
-            animate={i < tapCount ? { scale: [1, 1.3, 1] } : {}}
+            animate={
+              i < tapCount
+                ? { scale: [1, 1.3, 1] }
+                : {}
+            }
             transition={{ duration: 0.5 }}
           >
             <FavoriteIcon

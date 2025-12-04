@@ -4,6 +4,15 @@ import { Box, Button } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect, useMemo } from 'react';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import CardGiftcardRoundedIcon from '@mui/icons-material/CardGiftcardRounded';
+import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
+import TipsAndUpdatesRoundedIcon from '@mui/icons-material/TipsAndUpdatesRounded';
+import QuizRoundedIcon from '@mui/icons-material/QuizRounded';
+import LockRoundedIcon from '@mui/icons-material/LockRounded';
+import MailOutlineRoundedIcon from '@mui/icons-material/MailOutlineRounded';
+import EmojiEventsRoundedIcon from '@mui/icons-material/EmojiEventsRounded';
+import TouchAppRoundedIcon from '@mui/icons-material/TouchAppRounded';
+
 import { DESIGN_SYSTEM } from '../../theme/designSystem';
 import GiftChallenge1 from './GiftChallenge1';
 import GiftChallenge2 from './GiftChallenge2';
@@ -20,26 +29,26 @@ interface GiftBoxProps {
 const QUIZ_QUESTIONS = [
   {
     id: 1,
-    question: 'รู้มั้ย เราชอบสีอะไร?',
-    options: ['สีแดง', 'สีดำ', 'สีเหลือง'],
+    question: 'เมนูสิ้นคิดของเรา (ที่กินบ่อยจนจอมน่าจะจำได้) คืออะไร?',
+    options: ['กะเพราหมูสับไข่ดาว', 'หมูกระทะเยียวยาทุกสิ่ง', 'ข้าวไข่เจียวทรงเครื่อง'],
     correctOption: 1,
   },
   {
     id: 2,
-    question: 'เราชื่นชอบฟังเพลงแบบไหน?',
-    options: ['Indie-pop', 'K-pop', 'R&B'],
-    correctOption: 0,
+    question: 'เวลาเราหงุดหงิด หรือเหวี่ยงใส่ จริง ๆ แล้วเป็นเพราะอะไร?',
+    options: ['เกลียดขี้หน้าจอม', 'เครียดงานโว้ยยย', 'หิวข้าวนะรู้ยัง'],
+    correctOption: 1,
   },
   {
     id: 3,
-    question: 'สิ่งที่เรามักทำเวลาคิดถึงนาย?',
-    options: ['มองฟ้า', 'ทำวิตเก่า', 'ฟังเพลง'],
-    correctOption: 2,
+    question: 'ถ้าเรางอน (เรื่องตอบช้า) ต้องง้อด้วยวิธีไหนถึงจะหายไวสุด?',
+    options: ['พิมพ์ขอโทษยาว ๆ', 'พาไปหาของกินอร่อย ๆ', 'ปล่อยให้หายบ้าเอง'],
+    correctOption: 1,
   },
   {
     id: 4,
-    question: 'สถานที่ที่เราอยากไปกับนาย?',
-    options: ['ชายหาด', 'ไปดู sky', 'ทั่วไป'],
+    question: 'คิดว่าระหว่าง "เรา" กับ "จอม" ใครขี้เซากว่ากัน?',
+    options: ['เราเองแหละ', 'จอม (หลับคาจอประจำ)', 'พอกันทั้งคู่'],
     correctOption: 1,
   },
 ];
@@ -143,7 +152,7 @@ export default function GiftBox3D({
         }
       }, 1200);
     } else {
-      setCodeError('❌ ตอบผิด ลองใหม่นะ');
+      setCodeError('ตอบผิด ลองใหม่นะ');
       setTimeout(() => setCodeError(''), 2000);
     }
   };
@@ -155,7 +164,7 @@ export default function GiftBox3D({
       setShowParticles(true);
       setTimeout(() => setShowParticles(false), 2200);
     } else {
-      setCodeError('❌ รหัสไม่ถูกต้อง ลองใหม่');
+      setCodeError('รหัสไม่ถูกต้อง ลองใหม่อีกครั้ง');
       setTimeout(() => setCodeError(''), 3000);
     }
   };
@@ -213,7 +222,8 @@ export default function GiftBox3D({
         background: DESIGN_SYSTEM.background,
         overflow: 'hidden',
         perspective: '1200px',
-        fontFamily: 'var(--font-noto-sans-thai), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+        fontFamily:
+          'var(--font-noto-sans-thai), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
         ...DESIGN_SYSTEM.spacing.section,
       }}
     >
@@ -284,10 +294,21 @@ export default function GiftBox3D({
             backgroundClip: 'text',
             mb: { xs: 0.5, sm: 1 },
             m: 0,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 1,
           }}
         >
-          🎁 กล่องพิเศษจากใจ 💚
+          <CardGiftcardRoundedIcon
+            sx={{ fontSize: { xs: 28, sm: 32, md: 36 } }}
+          />
+          <span>กล่องพิเศษจากใจ</span>
+          <FavoriteRoundedIcon
+            sx={{ fontSize: { xs: 26, sm: 30, md: 34 }, color: accent }}
+          />
         </Box>
+
         <Box
           component="p"
           sx={{
@@ -298,9 +319,16 @@ export default function GiftBox3D({
             fontSize: { xs: '0.9rem', sm: '1rem', md: '1.1rem' },
             mt: 1,
             m: 0,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 0.6,
           }}
         >
-          ต้องผ่านชาเล้นพิเศษ ถึงจะเปิดได้ ✨
+          <TipsAndUpdatesRoundedIcon
+            sx={{ fontSize: { xs: 18, sm: 20 }, color: accent }}
+          />
+          <span>ต้องผ่านชาเล้นพิเศษ ถึงจะเปิดได้</span>
         </Box>
       </motion.div>
 
@@ -617,9 +645,15 @@ export default function GiftBox3D({
                   color: accent,
                   mb: 1,
                   m: 0,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 0.75,
                 }}
               >
-                ✨ ชาเล้นสุดท้าย · เปิดกล่อง
+                <TipsAndUpdatesRoundedIcon
+                  sx={{ fontSize: { xs: 16, sm: 18 } }}
+                />
+                ชาเล้นสุดท้าย · เปิดกล่อง
               </Box>
               <Box
                 component="p"
@@ -627,11 +661,35 @@ export default function GiftBox3D({
                   ...DESIGN_SYSTEM.typography.body,
                   color: 'rgba(226,232,240,0.96)',
                   m: 0,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 0.5,
                 }}
               >
-                🎉 ยินดีด้วย! รหัสถูกแล้ว
-                <br />
-                ตอนนี้ลองแตะกล่องด้านบนได้เลย 💌
+                <Box
+                  sx={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 0.6,
+                  }}
+                >
+                  <EmojiEventsRoundedIcon
+                    sx={{ fontSize: { xs: 18, sm: 20 }, color: accent }}
+                  />
+                  <span>ยินดีด้วย! รหัสถูกแล้ว</span>
+                </Box>
+                <Box
+                  sx={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 0.6,
+                  }}
+                >
+                  <TouchAppRoundedIcon
+                    sx={{ fontSize: { xs: 18, sm: 20 }, color: accent }}
+                  />
+                  <span>ตอนนี้ลองแตะกล่องด้านบนได้เลย</span>
+                </Box>
               </Box>
             </Box>
           )}
@@ -654,9 +712,15 @@ export default function GiftBox3D({
                   color: accent,
                   mb: 1,
                   m: 0,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 0.75,
                 }}
               >
-                💌 เปิดได้เสมอ
+                <MailOutlineRoundedIcon
+                  sx={{ fontSize: { xs: 18, sm: 20 } }}
+                />
+                เปิดได้เสมอ
               </Box>
               <Box
                 component="p"
@@ -668,7 +732,7 @@ export default function GiftBox3D({
               >
                 กล่องนี้อยู่กับนายตลอด
                 <br />
-                ถ้าอยากอ่านอีก แค่แตะกล่อง 💚
+                ถ้าอยากอ่านอีก แค่แตะกล่องอีกครั้ง
               </Box>
             </Box>
           )}
@@ -724,7 +788,7 @@ export default function GiftBox3D({
                     },
                   }}
                 >
-                  ไปเปิดของขวัญจริง 🎁
+                  ไปเปิดของขวัญจริง
                 </Button>
               </motion.div>
             </Box>
@@ -759,16 +823,51 @@ export default function GiftBox3D({
               background: 'rgba(15,23,42,0.8)',
               border: `1px solid ${accent}44`,
               backdropFilter: 'blur(10px)',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 0.75,
+              flexWrap: 'wrap',
+              justifyContent: 'center',
             }}
           >
-            {stage === 'tap' &&
-              `✨ ชาเล้นที่ 1: แตะกล่องเบา ๆ อีก ${Math.max(0, 3 - tapCount)} ครั้ง 💚`}
-            {stage === 'quiz' &&
-              `✨ ชาเล้นที่ 2: ตอบคำถามให้ถูกทั้งหมด 🎯`}
-            {stage === 'code-lock' &&
-              `✨ ใส่รหัส (${correctAnswersCount}/${QUIZ_QUESTIONS.length} ✓)`}
-            {stage === 'ready' &&
-              `✨ ชาเล้นที่ 3: แตะกล่องอีกครั้งเพื่อเปิด 💌`}
+            {stage === 'tap' && (
+              <>
+                <TouchAppRoundedIcon
+                  sx={{ fontSize: { xs: 16, sm: 18 } }}
+                />
+                <span>
+                  ชาเล้นที่ 1: แตะกล่องเบา ๆ อีก{' '}
+                  {Math.max(0, 3 - tapCount)} ครั้ง
+                </span>
+              </>
+            )}
+            {stage === 'quiz' && (
+              <>
+                <QuizRoundedIcon
+                  sx={{ fontSize: { xs: 16, sm: 18 } }}
+                />
+                <span>ชาเล้นที่ 2: ตอบคำถามให้ถูกทั้งหมด</span>
+              </>
+            )}
+            {stage === 'code-lock' && (
+              <>
+                <LockRoundedIcon
+                  sx={{ fontSize: { xs: 16, sm: 18 } }}
+                />
+                <span>
+                  ใส่รหัสปลดล็อก ({correctAnswersCount}/
+                  {QUIZ_QUESTIONS.length} ตอบถูก)
+                </span>
+              </>
+            )}
+            {stage === 'ready' && (
+              <>
+                <TipsAndUpdatesRoundedIcon
+                  sx={{ fontSize: { xs: 16, sm: 18 } }}
+                />
+                <span>ชาเล้นที่ 3: แตะกล่องอีกครั้งเพื่อเปิดจดหมาย</span>
+              </>
+            )}
           </Box>
         </motion.div>
       )}
